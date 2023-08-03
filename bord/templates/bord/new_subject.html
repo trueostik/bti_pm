@@ -1,0 +1,11 @@
+{% extends "bord/base.html" %}
+
+{% block content %}
+    <h4>Новий об'єкт:</h4>
+
+    <form action="{% url 'bord:new_subject' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="submit">Додати об'єкт</button>
+    </form>
+{% endblock content %}

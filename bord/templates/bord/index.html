@@ -1,0 +1,34 @@
+{% extends "bord/base.html" %}
+
+{% block content %}
+    <a href="{% url 'bord:new_subject' %}">+ Новий об'єкт</a>
+
+    <div class="row" data-masonry="{&quot;percentPosition&quot;: true }" style="position: relative; height: 1066.4px;">
+        {% for subject in subjects %}
+        <div class="col-sm-6 col-lg-4 mb-4" style="position: absolute; left: 0%; top: 524.2px;">
+          <div class="card">
+
+            <div class="card-body">
+              <h5 class="card-title text-center"><a href="{% url 'bord:subject' subject.id %}">{{ subject }}</a></h5>
+              <p class="card-text">{{ subject.address }}</p>
+                <p>
+                     <a class="{{ subject.get_measured }}" href="{% url 'bord:change_status' subject.id 'measured' %}" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">Поміряно</a>
+                     <a class="{{ subject.get_drawn }}" href="{% url 'bord:change_status' subject.id 'drawn' %}" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">Накреслено</a>
+                     <a class="{{ subject.get_calculated }}" href="{% url 'bord:change_status' subject.id 'calculated' %}" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">Пораховано</a>
+                     <a class="{{ subject.get_numbered }}" href="{% url 'bord:change_status' subject.id 'numbered' %}" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">Розставлено</a>
+                     <a class="{{ subject.get_done }}" href="{% url 'bord:change_status' subject.id 'done' %}" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">Готово</a>
+                </p>
+
+              <span class="card-text"><small class="text-muted">{{ subject.date_added|date:'d.m.Y' }}</small></span>
+              <span class="card-text-center me-2"><small class="">{{ subject.invent_number }}</small></span>
+            </div>
+          </div>
+        </div>
+
+        {% empty %}
+            <p>Нема роботи</p>
+        {% endfor %}
+    </div>
+
+
+{% endblock content %}

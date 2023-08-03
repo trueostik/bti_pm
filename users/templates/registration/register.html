@@ -1,0 +1,14 @@
+{% extends "bord/base.html" %}
+
+{% block content %}
+
+    <form method="post" action="{% url 'users:register' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button name="submit">Зареєструватись</button>
+        <input type="hidden" name="next"
+               value="{% url 'bord:index' %}" />
+    </form>
+
+{% endblock content %}

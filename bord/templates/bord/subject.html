@@ -1,0 +1,16 @@
+{% extends "bord/base.html" %}
+
+{% block content %}
+    <h1>{{ subject }}</h1>
+    <a href="{% url 'bord:edit_subject' subject.id %}">Редагувати</a>
+    {% for comment in comments %}
+        <p>
+            {{ comment }}
+            <a href="{% url 'bord:edit_comment' comment.id %}">Редагувати</a>
+            <a href="{% url 'bord:delete_comment' comment.id %}">Видалити</a>
+        </p>
+    {% empty %}
+        <p>Нема коментарів</p>
+    {% endfor %}
+    <a href="{% url 'bord:new_comment' subject.id %}">+ Додати коментар</a>
+{% endblock content %}

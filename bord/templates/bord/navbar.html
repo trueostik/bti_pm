@@ -1,0 +1,11 @@
+
+ <a href="{% url 'bord:index' %}"><h1>Дошка</h1></a>
+
+    {% if user.is_authenticated %}
+        {{ user.username }}
+        <a href="{% url 'users:logout' %}">Вийти</a>
+    {% else %}
+        <a href="{% url 'users:register' %}">Зареєтруватися</a>
+        <a href="{% url 'users:login' %}">Увійти</a>
+    {% endif %}
+    <hr>
