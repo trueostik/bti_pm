@@ -1,11 +1,38 @@
 
- <a href="{% url 'bord:index' %}"><h1>Дошка</h1></a>
-
-    {% if user.is_authenticated %}
-        {{ user.username }}
-        <a href="{% url 'users:logout' %}">Вийти</a>
-    {% else %}
-        <a href="{% url 'users:register' %}">Зареєтруватися</a>
-        <a href="{% url 'users:login' %}">Увійти</a>
-    {% endif %}
-    <hr>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'bord:index' %}">Дошка</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">To Do</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Пошук" aria-label="Search">
+        <button class="btn btn-sm btn-outline-success" type="submit">Пошук</button>
+      </form>
+        <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary ml-1">{{ user.username }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-outline-warning" href="{% url 'users:logout' %}">Вийти</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="{% url 'users:register' %}">Зареєтруватися</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-warning" href="{% url 'users:login' %}">Увійти</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+  </div>
+</nav>
+<hr>

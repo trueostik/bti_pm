@@ -1,8 +1,22 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class Subject(models.Model):
+
+    class TypeOfSubject(models.TextChoices):
+        BUILDING = 'BU', _('Багатоповерхівка')
+        COMMERCE = 'CO', _('Будівля')
+        GARAGE = 'GA', _('Гараж')
+        HOUSE = 'HO', _('Особняк')
+        APARTMENT = 'AP', _('Квартира')
+        KEV = 'KE', _('КЕВ')
+        QUARTERS = 'QU', _('Нежитлове приміщення')
+        UNFINISHED = 'UF', _('Незавершене')
+        SUMMERHOUSE = 'SH', _('Садовий будинок')
+
     name = models.CharField(max_length=200)
+    type = models.CharField(max_length=2, choices=TypeOfSubject.choices, default=TypeOfSubject.HOUSE)
     address = models.CharField(max_length=200, blank=True)
     invent_number = models.CharField(max_length=10, blank=True)
     measured = models.BooleanField(default=False)
@@ -11,6 +25,7 @@ class Subject(models.Model):
     numbered = models.BooleanField(default=False)
     done = models.BooleanField(default=False)
     date_added = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return self.name

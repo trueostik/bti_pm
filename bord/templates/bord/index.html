@@ -1,7 +1,7 @@
 {% extends "bord/base.html" %}
 
 {% block content %}
-    <a href="{% url 'bord:new_subject' %}">+ Новий об'єкт</a>
+    <a class="btn btn-primary mb-3" href="{% url 'bord:new_subject' %}">+ Новий об'єкт</a>
 
     <div class="row" data-masonry="{&quot;percentPosition&quot;: true }" style="position: relative; height: 1066.4px;">
         {% for subject in subjects %}
@@ -9,8 +9,9 @@
           <div class="card">
 
             <div class="card-body">
-              <h5 class="card-title text-center"><a href="{% url 'bord:subject' subject.id %}">{{ subject }}</a></h5>
-              <p class="card-text">{{ subject.address }}</p>
+              <h5 class="card-title text-center mb-0"><a href="{% url 'bord:subject' subject.id %}">{{ subject }}</a><span class="badge rounded-pill bg-secondary" style="font-size: 11px; padding: 3px 5px; border-radius: 4px; margin: 5px">{{ subject.get_type_display }}</span></h5>
+                <p class="card-text text-center mt-0"><small class="">{{ subject.invent_number }}</small></p>
+              <p class="card-text ">{{ subject.address }}</p>
                 <p>
                      <a class="{{ subject.get_measured }}" href="{% url 'bord:change_status' subject.id 'measured' %}" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">Поміряно</a>
                      <a class="{{ subject.get_drawn }}" href="{% url 'bord:change_status' subject.id 'drawn' %}" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">Накреслено</a>
@@ -20,7 +21,6 @@
                 </p>
 
               <span class="card-text"><small class="text-muted">{{ subject.date_added|date:'d.m.Y' }}</small></span>
-              <span class="card-text-center me-2"><small class="">{{ subject.invent_number }}</small></span>
             </div>
           </div>
         </div>
