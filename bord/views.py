@@ -5,7 +5,7 @@ from .forms import SubjectForm, CommentForm
 
 
 def index(request):
-    subjects = Subject.objects.order_by('-date_added')
+    subjects = Subject.objects.order_by('priority')
     context = {'subjects': subjects}
     return render(request, 'bord/index.html', context)
 
@@ -96,5 +96,12 @@ def change_status(request, subject_id, field):
     subject = Subject.objects.get(id=subject_id)
     field_value = getattr(subject, field)
     setattr(subject, field, not field_value)
+    subject.save()
+    return redirect('bord:index')
+
+
+def change_priority(request, subject_id, priority):
+    subject = Subject.objects.get(id=subject_id)
+    subject.priority = priority
     subject.save()
     return redirect('bord:index')

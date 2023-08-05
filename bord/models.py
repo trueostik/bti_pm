@@ -15,8 +15,14 @@ class Subject(models.Model):
         UNFINISHED = 'UF', _('Незавершене')
         SUMMERHOUSE = 'SH', _('Садовий будинок')
 
+    class Priority(models.TextChoices):
+        HIGH = 'AA', _('Високий')
+        NORMAL = 'BB', _('Звичайний')
+        LOW = 'CC', _('Низький')
+
     name = models.CharField(max_length=200)
     type = models.CharField(max_length=2, choices=TypeOfSubject.choices, default=TypeOfSubject.HOUSE)
+    priority = models.CharField(max_length=3, choices=Priority.choices, default=Priority.NORMAL)
     address = models.CharField(max_length=200, blank=True)
     invent_number = models.CharField(max_length=10, blank=True)
     measured = models.BooleanField(default=False)
@@ -59,6 +65,14 @@ class Subject(models.Model):
             return 'btn btn-success'
         else:
             return 'btn btn-danger'
+
+    def get_priority(self):
+        if self.priority == 'AA':
+            return 'btn btn-danger'
+        if self.priority == 'BB':
+            return 'btn btn-warning'
+        if self.priority == 'CC':
+            return 'btn btn-success'
 
 
 class Comment(models.Model):

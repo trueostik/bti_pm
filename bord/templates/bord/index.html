@@ -9,7 +9,20 @@
           <div class="card">
 
             <div class="card-body">
-              <h5 class="card-title text-center mb-0"><a href="{% url 'bord:subject' subject.id %}">{{ subject }}</a><span class="badge rounded-pill bg-secondary" style="font-size: 11px; padding: 3px 5px; border-radius: 4px; margin: 5px">{{ subject.get_type_display }}</span></h5>
+
+                  <div class="dropdown">
+                      <h5 class="card-title text-center mb-0">
+                          <a href="{% url 'bord:subject' subject.id %}">{{ subject }}</a>
+                      <button class="btn {{ subject.get_priority }} rounded-pill" style="font-size: 11px; padding: 3px 5px; border-radius: 2px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ subject.get_type_display }}
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'bord:change_priority' subject.id 'AA' %}">Високий</a></li>
+                        <li><a class="dropdown-item" href="{% url 'bord:change_priority' subject.id 'BB' %}">Середній</a></li>
+                        <li><a class="dropdown-item" href="{% url 'bord:change_priority' subject.id 'CC' %}">Низький</a></li>
+                      </ul>
+                    </div>
+                  </h5>
                 <p class="card-text text-center mt-0"><small class="">{{ subject.invent_number }}</small></p>
               <p class="card-text ">{{ subject.address }}</p>
                 <p>

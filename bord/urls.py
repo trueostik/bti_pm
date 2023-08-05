@@ -14,4 +14,5 @@ urlpatterns = [
     path('edit_subject/<int:subject_id>', views.edit_subject, name='edit_subject'),
     path('delete_subject/<int:subject_id>', views.delete_subject, name='delete_subject'),
     path('change_status/<int:subject_id>/<str:field>', views.change_status, name='change_status'),
+    path('change_priority/<int:subject_id>/<str:priority>', views.change_priority, name='change_priority'),
 ]
