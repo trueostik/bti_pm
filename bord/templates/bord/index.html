@@ -1,5 +1,7 @@
 {% extends "bord/base.html" %}
 
+
+
 {% block content %}
     <a class="btn btn-primary mb-3" href="{% url 'bord:new_subject' %}">+ Новий об'єкт</a>
 
@@ -25,13 +27,13 @@
                   </h5>
                 <p class="card-text text-center mt-0"><small class="">{{ subject.invent_number }}</small></p>
               <p class="card-text ">{{ subject.address }}</p>
-                <p>
-                     <a class="{{ subject.get_measured }}" href="{% url 'bord:change_status' subject.id 'measured' %}" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">Поміряно</a>
-                     <a class="{{ subject.get_drawn }}" href="{% url 'bord:change_status' subject.id 'drawn' %}" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">Накреслено</a>
-                     <a class="{{ subject.get_calculated }}" href="{% url 'bord:change_status' subject.id 'calculated' %}" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">Пораховано</a>
-                     <a class="{{ subject.get_numbered }}" href="{% url 'bord:change_status' subject.id 'numbered' %}" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">Розставлено</a>
-                     <a class="{{ subject.get_done }}" href="{% url 'bord:change_status' subject.id 'done' %}" style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">Готово</a>
-                </p>
+                <div class="text-center" >
+                     <a class="{{ subject.get_measured }}" href="{% url 'bord:change_status' subject.id 'measured' %}"><svg class="bi" width="24" height="24"><use xlink:href="#measured"></use></svg></a>
+                     <a class="{{ subject.get_drawn }}" href="{% url 'bord:change_status' subject.id 'drawn' %}"><svg class="bi" width="24" height="24"><use xlink:href="#drawn"></use></svg></a>
+                     <a class="{{ subject.get_calculated }}" href="{% url 'bord:change_status' subject.id 'calculated' %}"><svg class="bi" width="24" height="24"><use xlink:href="#calculated"></use></svg></a>
+                     <a class="{{ subject.get_numbered }}" href="{% url 'bord:change_status' subject.id 'numbered' %}"><svg class="bi" width="24" height="24"><use xlink:href="#numbered"></use></svg></a>
+                     <a class="{{ subject.get_done }}" href="{% url 'bord:change_status' subject.id 'done' %}"><svg class="bi" width="24" height="24"><use xlink:href="#done"></use></svg></a>
+                </div>
 
               <span class="card-text"><small class="text-muted">{{ subject.date_added|date:'d.m.Y' }}</small></span>
             </div>
@@ -45,3 +47,4 @@
 
 
 {% endblock content %}
+
