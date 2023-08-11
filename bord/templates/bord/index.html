@@ -8,14 +8,14 @@
     <div class="row" data-masonry="{&quot;percentPosition&quot;: true }" style="position: relative; height: 1066.4px;">
         {% for subject in subjects %}
         <div class="col-sm-6 col-lg-4 mb-4" style="position: absolute; left: 0%; top: 524.2px;">
-          <div class="card">
+          <div class="card" style="background-color: {{ subject.get_priority }};">
 
             <div class="card-body">
 
                   <div class="dropdown">
                       <h5 class="card-title text-center mb-0">
                           <a href="{% url 'bord:subject' subject.id %}">{{ subject }}</a>
-                      <button class="btn {{ subject.get_priority }} rounded-pill" style="font-size: 11px; padding: 3px 5px; border-radius: 2px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <button class="btn btn-secondary rounded-pill" style="font-size: 11px; padding: 3px 5px; border-radius: 2px;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ subject.get_type_display }}
                       </button>
                       <ul class="dropdown-menu">

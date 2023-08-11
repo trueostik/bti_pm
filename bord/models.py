@@ -68,11 +68,11 @@ class Subject(models.Model):
 
     def get_priority(self):
         if self.priority == 'AA':
-            return 'btn btn-danger'
+            return '#ffb3b3'
         if self.priority == 'BB':
-            return 'btn btn-warning'
+            return '#fffa75'
         if self.priority == 'CC':
-            return 'btn btn-success'
+            return '#9bff99'
 
 
 class Comment(models.Model):
