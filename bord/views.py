@@ -10,6 +10,12 @@ def index(request):
     return render(request, 'bord/index.html', context)
 
 
+def archive(request):
+    subjects = Subject.objects.order_by('date_added')
+    context = {'subjects': subjects}
+    return render(request, 'bord/archive.html', context)
+
+
 def subject_view(request, subject_id):
     subject = Subject.objects.get(id=subject_id)
     comments = subject.comment_set.order_by('-date_added')
@@ -104,4 +110,16 @@ def change_priority(request, subject_id, priority):
     subject = Subject.objects.get(id=subject_id)
     subject.priority = priority
     subject.save()
+    return redirect('bord:index')
+
+
+def add_to_archive(request, subject_id):
+    subject = Subject.objects.get(id=subject_id)
+    if subject.archived:
+        subject.archived = False
+        subject.done = False
+        subject.save()
+    else:
+        subject.archived = True
+        subject.save()
     return redirect('bord:index')

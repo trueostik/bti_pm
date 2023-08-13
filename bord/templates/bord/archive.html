@@ -3,11 +3,11 @@
 
 
 {% block content %}
-    <a class="btn btn-primary mb-3" href="{% url 'bord:new_subject' %}">+ Новий об'єкт</a>
+    <h3>Архів</h3>
 
     <div class="row" data-masonry="{&quot;percentPosition&quot;: true }" style="position: relative; height: 1066.4px;">
         {% for subject in subjects %}
-            {% if not subject.archived %}
+            {% if subject.archived %}
             <div class="col-sm-6 col-lg-4 mb-4" style="position: absolute; left: 0%; top: 524.2px;">
               <div class="card" style="background-color: {{ subject.get_priority }};">
 
@@ -29,14 +29,8 @@
                     <p class="card-text text-center mt-0"><small class="">{{ subject.invent_number }}</small></p>
                   <p class="card-text ">{{ subject.address }}</p>
                     <div class="text-center" >
-                         <a class="{{ subject.get_measured }}" href="{% url 'bord:change_status' subject.id 'measured' %}"><svg class="bi" width="24" height="24"><use xlink:href="#measured"></use></svg></a>
-                         <a class="{{ subject.get_drawn }}" href="{% url 'bord:change_status' subject.id 'drawn' %}"><svg class="bi" width="24" height="24"><use xlink:href="#drawn"></use></svg></a>
-                         <a class="{{ subject.get_calculated }}" href="{% url 'bord:change_status' subject.id 'calculated' %}"><svg class="bi" width="24" height="24"><use xlink:href="#calculated"></use></svg></a>
-                         <a class="{{ subject.get_numbered }}" href="{% url 'bord:change_status' subject.id 'numbered' %}"><svg class="bi" width="24" height="24"><use xlink:href="#numbered"></use></svg></a>
-                         <a class="{{ subject.get_done }}" href="{% url 'bord:change_status' subject.id 'done' %}"><svg class="bi" width="24" height="24"><use xlink:href="#done"></use></svg></a>
-                         {% if subject.done %}
-                            <a class="btn btn-danger" href="{% url 'bord:add_to_archive' subject.id %}"><svg class="bi" width="24" height="24"><use xlink:href="#i-archive"></use></svg></a>
-                         {% endif %}
+
+                         <a class="btn btn-success" href="{% url 'bord:add_to_archive' subject.id %}"><svg class="bi" width="24" height="24"><use xlink:href="#i-archive"></use></svg></a>
                     </div>
 
                   <span class="card-text"><small class="text-muted">{{ subject.date_added|date:'d.m.Y' }}</small></span>
@@ -48,7 +42,6 @@
             <p>Нема роботи</p>
         {% endfor %}
     </div>
-
 
 
 {% endblock content %}
