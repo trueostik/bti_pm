@@ -29,6 +29,7 @@ class Subject(models.Model):
     measured = models.BooleanField(default=False)
     drawn = models.BooleanField(default=False)
     calculated = models.BooleanField(default=False)
+    typed = models.BooleanField(default=False)
     numbered = models.BooleanField(default=False)
     done = models.BooleanField(default=False)
     date_added = models.DateTimeField(auto_now_add=True)
@@ -51,6 +52,12 @@ class Subject(models.Model):
 
     def get_calculated(self):
         if self.calculated:
+            return 'btn btn-success'
+        else:
+            return 'btn btn-danger'
+
+    def get_typed(self):
+        if self.typed:
             return 'btn btn-success'
         else:
             return 'btn btn-danger'
