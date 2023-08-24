@@ -6,8 +6,8 @@ from .models import Subject, Comment
 class SubjectForm(forms.ModelForm):
     class Meta:
         model = Subject
-        fields = ['name']
-        labels = {'name': ''}
+        fields = ['name', 'type', 'address', 'invent_number']
+        labels = {'name': 'Назва', 'type': 'Тип', 'address': 'Адреса', 'invent_number': 'Інвентаризаційний номер'}
 
 
 class CommentForm(forms.ModelForm):

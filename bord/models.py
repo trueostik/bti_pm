@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
 
 
 class Subject(models.Model):
@@ -82,14 +83,18 @@ class Subject(models.Model):
         if self.priority == 'CC':
             return '#9bff99'
 
+    def get_comments_quantity1():
+        return "1"
+
 
 class Comment(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     text = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        if len(self.text) < 100:
+        if len(self.text) < 500:
             return self.text
         else:
-            return f"{self.text[:100]}..."
+            return f"{self.text[:500]}..."

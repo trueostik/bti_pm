@@ -28,7 +28,7 @@
                       </h5>
                     <p class="card-text text-center mt-0"><small class="">{{ subject.invent_number }}</small></p>
                   <p class="card-text ">{{ subject.address }}</p>
-                    <div class="text-center" >
+                    <div class="text-center mb-2" >
                          <a class="{{ subject.get_measured }}" href="{% url 'bord:change_status' subject.id 'measured' %}"><svg class="bi" width="24" height="24"><use xlink:href="#measured"></use></svg></a>
                          <a class="{{ subject.get_drawn }}" href="{% url 'bord:change_status' subject.id 'drawn' %}"><svg class="bi" width="24" height="24"><use xlink:href="#drawn"></use></svg></a>
                          <a class="{{ subject.get_calculated }}" href="{% url 'bord:change_status' subject.id 'calculated' %}"><svg class="bi" width="24" height="24"><use xlink:href="#calculated"></use></svg></a>
@@ -39,8 +39,20 @@
                             <a class="btn btn-danger" href="{% url 'bord:add_to_archive' subject.id %}"><svg class="bi" width="24" height="24"><use xlink:href="#i-archive"></use></svg></a>
                          {% endif %}
                     </div>
-
-                  <span class="card-text"><small class="text-muted">{{ subject.date_added|date:'d.m.Y' }}</small></span>
+                  <div class="d-flex w-100 justify-content-between">
+                    <span class="card-text"><small class="text-muted">{{ subject.date_added|date:'d.m.Y' }}</small></span>
+                    <button type="button" class="btn btn-sm btn-primary position-relative">
+                      <svg class="bi" width="16" height="16"><use xlink:href="#comment"></use></svg>
+                      {% with subject.comment_set.count as comment_count %}
+                        {% if comment_count > 0 %}
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ comment_count }}
+                            <span class="visually-hidden">unread messages</span>
+                        {% endif %}
+                      {% endwith %}
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

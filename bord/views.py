@@ -19,7 +19,8 @@ def archive(request):
 def subject_view(request, subject_id):
     subject = Subject.objects.get(id=subject_id)
     comments = subject.comment_set.order_by('-date_added')
-    context = {'subject': subject, 'comments': comments}
+    comment_count = Comment.count_comments()
+    context = {'subject': subject, 'comments': comments, 'comment_count': comment_count}
     return render(request, 'bord/subject.html', context)
 
 
@@ -66,6 +67,7 @@ def new_comment(request, subject_id):
         form = CommentForm(data=request.POST)
         if form.is_valid():
             new_comment = form.save(commit=False)
+            new_comment.author = request.user
             new_comment.subject = subject
             new_comment.save()
             return redirect('bord:subject', subject_id=subject_id)
