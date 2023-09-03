@@ -5,21 +5,51 @@
     <p> Адреса: {{ subject.address }}</p>
     <p> Інвентаризаційний номер: {{ subject.invent_number }}</p>
     <p> Дата створення: {{ subject.date_added|date:'d.m.Y' }}</p>
-    <a class="btn btn-primary" href="{% url 'bord:edit_subject' subject.id %}">Редагувати</a>
+    <a class="btn btn-primary" href="{% url 'bord:edit_subject' subject.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-edit"></use></svg> Редагувати</a>
+
+    <h4 class="mt-5">Задачі:</h4>
+    {% for subtask in subtasks %}
+        <ul class="list-group">
+          <li class="list-group-item mt-2" aria-current="true">
+            <div class="d-flex w-100 justify-content-between">
+                {% if subtask.done %}
+                    <div>
+                      <a class="btn btn-success btn-sm" href="{% url 'bord:check_subtask' subtask.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#done"></use></svg></a>
+                      <del class="text-muted">{{ subtask }}</del>
+                    </div>
+                {% else %}
+                    <div>
+                      <a class="btn btn-danger btn-sm" href="{% url 'bord:check_subtask' subtask.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#empty"></use></svg></a>
+                      {{ subtask }}
+                    </div>
+                {% endif %}
+                <div>
+                    <a href="{% url 'bord:edit_subtask' subtask.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-edit"></use></svg></a>
+                    <a href="{% url 'bord:delete_subtask' subtask.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-trash"></use></svg></a>
+                </div>
+            </div>
+          </li>
+        </ul>
+    {% empty %}
+        <p>Нема задач</p>
+    {% endfor %}
+    <a class="btn btn-primary mt-3" href="{% url 'bord:new_subtask' subject.id %}">+ Додати задачу</a>
+
     <h4 class="mt-5">Коментарі:</h4>
     {% for comment in comments %}
         <ul class="list-group">
           <li class="list-group-item mt-2" aria-current="true">
             <div class="d-flex w-100 justify-content-between">
               <p class="mb-1">{{ comment }}</p>
-              <small>{{ comment.date_added|date:'d.m.Y H:i' }}</small>
+
+                <div>
+                    <a href="{% url 'bord:edit_comment' comment.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-edit"></use></svg></a>
+                    <a href="{% url 'bord:delete_comment' comment.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-trash"></use></svg></a>
+                </div>
             </div>
             <div class="d-flex w-100 justify-content-between">
                 <small class="text-muted">{{ comment.author }}</small>
-                <div>
-                    <a href="{% url 'bord:edit_comment' comment.id %}">Редагувати</a>
-                    <a href="{% url 'bord:delete_comment' comment.id %}">Видалити</a>
-                </div>
+                <small>{{ comment.date_added|date:'d.m.Y H:i' }}</small>
             </div>
           </li>
         </ul>

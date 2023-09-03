@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Subject, Comment
+from .models import Subject, Comment, Subtask
 
 
 class SubjectForm(forms.ModelForm):
@@ -13,6 +13,14 @@ class SubjectForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
+        fields = ['text']
+        labels = {'text': ''}
+        widgets = {'text': forms.Textarea(attrs={'cols': 80})}
+
+
+class SubtaskForm(forms.ModelForm):
+    class Meta:
+        model = Subtask
         fields = ['text']
         labels = {'text': ''}
         widgets = {'text': forms.Textarea(attrs={'cols': 80})}

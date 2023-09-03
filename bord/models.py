@@ -98,3 +98,12 @@ class Comment(models.Model):
             return self.text
         else:
             return f"{self.text[:500]}..."
+
+
+class Subtask (models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    text = models.TextField()
+    done = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.text

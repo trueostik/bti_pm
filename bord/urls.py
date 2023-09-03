@@ -17,4 +17,9 @@ urlpatterns = [
     path('delete_subject/<int:subject_id>', views.delete_subject, name='delete_subject'),
     path('change_status/<int:subject_id>/<str:field>', views.change_status, name='change_status'),
     path('change_priority/<int:subject_id>/<str:priority>', views.change_priority, name='change_priority'),
+    path('new_subtask/<int:subject_id>/', views.new_subtask, name='new_subtask'),
+    path('check_subtask/<int:subtask_id>/', views.check_subtask, name='check_subtask'),
+    path('edit_subtask/<int:subtask_id>', views.edit_subtask, name='edit_subtask'),
+    path('delete_subtask/<int:subtask_id>', views.delete_subtask, name='delete_subtask'),
+
 ]

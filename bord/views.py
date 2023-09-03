@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
-from .models import Subject, Comment
-from .forms import SubjectForm, CommentForm
+from .models import Subject, Comment, Subtask
+from .forms import SubjectForm, CommentForm, SubtaskForm
 
 
 def index(request):
@@ -19,8 +19,8 @@ def archive(request):
 def subject_view(request, subject_id):
     subject = Subject.objects.get(id=subject_id)
     comments = subject.comment_set.order_by('-date_added')
-    comment_count = Comment.count_comments()
-    context = {'subject': subject, 'comments': comments, 'comment_count': comment_count}
+    subtasks = subject.subtask_set.order_by('done')
+    context = {'subject': subject, 'comments': comments, 'subtasks': subtasks}
     return render(request, 'bord/subject.html', context)
 
 
@@ -125,3 +125,54 @@ def add_to_archive(request, subject_id):
         subject.archived = True
         subject.save()
     return redirect('bord:index')
+
+
+def new_subtask(request, subject_id):
+    subject = Subject.objects.get(id=subject_id)
+    if request.method != 'POST':
+        form = SubtaskForm()
+    else:
+        form = SubtaskForm(data=request.POST)
+        if form.is_valid():
+            new_subtask = form.save(commit=False)
+            new_subtask.subject = subject
+            new_subtask.save()
+            return redirect('bord:subject', subject_id=subject_id)
+
+    context = {'subject': subject, 'form': form}
+    return render(request, 'bord/new_subtask.html', context)
+
+
+def check_subtask(request, subtask_id):
+    subtask = Subtask.objects.get(id=subtask_id)
+    subject = subtask.subject
+    if subtask.done:
+        subtask.done = False
+    else:
+        subtask.done = True
+    subtask.save()
+    return redirect('bord:subject', subject_id=subject.id)
+
+
+def edit_subtask(request, subtask_id):
+    subtask = Subtask.objects.get(id=subtask_id)
+    subject = subtask.subject
+
+    if request.method != 'POST':
+        form = SubtaskForm(instance=subtask)
+    else:
+        form = SubtaskForm(instance=subtask, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('bord:subject', subject_id=subject.id)
+
+    context = {'subtask': subtask, 'subject': subject, 'form': form}
+    return render(request, 'bord/edit_subtask.html', context)
+
+
+def delete_subtask(*args, subtask_id):
+    subtask = Subtask.objects.get(id=subtask_id)
+    subject = subtask.subject
+
+    subtask.delete()
+    return redirect('bord:subject', subject_id=subject.id)
