@@ -7,6 +7,8 @@ from .forms import SubjectForm, CommentForm, SubtaskForm
 def index(request):
     subjects = Subject.objects.order_by('priority')
     context = {'subjects': subjects}
+    for subject in subjects:
+        subject.unfinished_subtasks_count = subject.subtask_set.filter(done=False).count()
     return render(request, 'bord/index.html', context)
 
 
