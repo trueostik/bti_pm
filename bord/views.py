@@ -68,11 +68,14 @@ def new_comment(request, subject_id):
     else:
         form = CommentForm(data=request.POST)
         if form.is_valid():
-            new_comment = form.save(commit=False)
-            new_comment.author = request.user
-            new_comment.subject = subject
-            new_comment.save()
-            return redirect('bord:subject', subject_id=subject_id)
+            try:
+                new_comment = form.save(commit=False)
+                new_comment.author = request.user
+                new_comment.subject = subject
+                new_comment.save()
+                return redirect('bord:subject', subject_id=subject_id)
+            except:
+                return redirect('users:login')
 
     context = {'subject': subject, 'form': form}
     return render(request, 'bord/new_comment.html', context)

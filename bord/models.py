@@ -26,6 +26,8 @@ class Subject(models.Model):
     priority = models.CharField(max_length=3, choices=Priority.choices, default=Priority.NORMAL)
     archived = models.BooleanField(default=False)
     address = models.CharField(max_length=200, blank=True)
+    client_name = models.CharField(max_length=200, blank=True)
+    client_number = models.CharField(max_length=200, blank=True)
     invent_number = models.CharField(max_length=10, blank=True)
     measured = models.BooleanField(default=False)
     drawn = models.BooleanField(default=False)
