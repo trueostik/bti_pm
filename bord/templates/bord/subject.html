@@ -1,6 +1,7 @@
 {% extends "bord/base.html" %}
 
 {% block content %}
+
     <h1>{{ subject }}<span class="badge bg-secondary">{{ subject.get_type_display }}</span></h1>
     <p> Адреса: {{ subject.address }}</p>
     <p> Інвентаризаційний номер: {{ subject.invent_number }}</p>
@@ -56,8 +57,28 @@
     {% empty %}
         <p>Нема коментарів</p>
     {% endfor %}
-    <a class="btn btn-primary mt-3" href="{% url 'bord:new_comment' subject.id %}">+ Додати коментар</a>
+    <a class="btn btn-primary mt-3" href="{% url 'bord:new_comment' subject.id %}">+ Додати коментар</a><br>
+    <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <svg class="bi" width="16" height="16"><use xlink:href="#i-trash"></use></svg> Видалити об'єкт
+    </button>
 
-
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Видалення об'єкта</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Об'єкт буде видалено!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+            <a class="btn btn-danger" href="{% url 'bord:delete_subject' subject.id %}">Видалити</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
 {% endblock content %}
