@@ -6,6 +6,7 @@ from . import views
 app_name = 'bord'
 urlpatterns = [
     path('', views.index, name='index'),
+    path('search', views.search_view, name='search'),
     path('archive', views.archive, name='archive'),
     path('add_to_archive/<int:subject_id>', views.add_to_archive, name='add_to_archive'),
     path('subject/<int:subject_id>/', views.subject_view, name='subject'),

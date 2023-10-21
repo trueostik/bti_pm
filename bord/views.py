@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.db.models import Q
 
 from .models import Subject, Comment, Subtask
 from .forms import SubjectForm, CommentForm, SubtaskForm
@@ -10,6 +11,23 @@ def index(request):
     for subject in subjects:
         subject.unfinished_subtasks_count = subject.subtask_set.filter(done=False).count()
     return render(request, 'bord/index.html', context)
+
+
+def search_view(request):
+    query = request.GET.get('query', '')
+    if query:
+        results = Subject.objects.filter(
+            Q(name__icontains=query) |
+            Q(address__icontains=query) |
+            Q(client_name__icontains=query) |
+            Q(client_number__icontains=query) |
+            Q(invent_number__icontains=query)
+        )
+    else:
+        results = []
+    print(f'query: {query}')
+
+    return render(request, 'bord/search_results.html', {'results': results, 'query': query})
 
 
 def archive(request):

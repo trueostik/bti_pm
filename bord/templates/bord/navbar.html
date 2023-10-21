@@ -14,8 +14,8 @@
           <a class="nav-link active" aria-current="page" href="{% url 'bord:archive' %}">Архів</a>
         </li>
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Пошук" aria-label="Search">
+      <form class="d-flex" role="search" id="search-form" method="get" action="{% url 'bord:search' %}">
+        <input class="form-control me-2" type="text" placeholder="Пошук" aria-label="Search" name="query">
         <button class="btn btn-sm btn-outline-success me-2" type="submit">Пошук</button>
       </form>
         <ul class="navbar-nav ml-auto">
