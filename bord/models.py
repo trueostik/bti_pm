@@ -109,3 +109,18 @@ class Subtask (models.Model):
 
     def __str__(self):
         return self.text
+
+
+class Task (models.Model):
+    user = models.ManyToManyField(User, related_name='task')
+    text = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+    done = models.BooleanField(default=False)
+
+    def __str__(self):
+        users = ', '.join([user.username for user in self.user.all()])
+        return f'{self.text}, ({users})'
+
+    def users(self):
+        users = '<br>'.join([user.username for user in self.user.all()])
+        return users

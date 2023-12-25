@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
 
-from .models import Subject, Comment, Subtask
-from .forms import SubjectForm, CommentForm, SubtaskForm
+from .models import Subject, Comment, Subtask, User, Task
+from .forms import SubjectForm, CommentForm, SubtaskForm, TaskForm
 
 
 def index(request):
-    subjects = Subject.objects.order_by('priority')
+    subjects = Subject.objects.order_by('priority', '-date_added')
     context = {'subjects': subjects}
     for subject in subjects:
         subject.unfinished_subtasks_count = subject.subtask_set.filter(done=False).count()
@@ -31,9 +31,16 @@ def search_view(request):
 
 
 def archive(request):
-    subjects = Subject.objects.order_by('date_added')
+    subjects = Subject.objects.order_by('-date_added')
     context = {'subjects': subjects}
     return render(request, 'bord/archive.html', context)
+
+
+def todo(request):
+    user = request.user
+    tasks = Task.objects.filter(user=user).order_by('done', '-date_added')
+    context = {'tasks': tasks}
+    return render(request, 'bord/todo.html', context)
 
 
 def subject_view(request, subject_id):
@@ -199,3 +206,55 @@ def delete_subtask(*args, subtask_id):
 
     subtask.delete()
     return redirect('bord:subject', subject_id=subject.id)
+
+
+def new_task(request):
+    current_user = request.user
+    users = User.objects.exclude(pk=current_user.pk)
+    if request.method != 'POST':
+        form = TaskForm()
+    else:
+        form = TaskForm(data=request.POST)
+        if form.is_valid():
+            new_task = form.save(commit=False)
+            new_task.save()
+            users_selected = request.POST.getlist('users')  # Отримати список обраних користувачів
+            users = User.objects.filter(pk__in=users_selected)  # Отримати об'єкти користувачів за їх ID
+            new_task.user.set(users)  # Додати обраних користувачів до поля user завдання
+            new_task.user.add(current_user)
+            return redirect('bord:todo')
+
+    context = {'form': form, 'users': users}
+    return render(request, 'bord/new_task.html', context)
+
+
+def check_task(request, task_id):
+    task = Task.objects.get(id=task_id)
+    if task.done:
+        task.done = False
+    else:
+        task.done = True
+    task.save()
+    return redirect('bord:todo')
+
+
+def edit_task(request, task_id):
+    task = Task.objects.get(id=task_id)
+
+    if request.method != 'POST':
+        form = TaskForm(instance=task)
+    else:
+        form = TaskForm(instance=task, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('bord:todo')
+
+    context = {'task': task, 'form': form}
+    return render(request, 'bord/edit_task.html', context)
+
+
+def delete_task(*args, task_id):
+    task = Task.objects.get(id=task_id)
+
+    task.delete()
+    return redirect('bord:todo')

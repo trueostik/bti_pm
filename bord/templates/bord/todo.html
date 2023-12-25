@@ -1,0 +1,46 @@
+{% extends "bord/base.html" %}
+
+{% block content %}
+
+
+ <h4 class="mt-5">Задачі:</h4>
+    {% for task in tasks %}
+        <ul class="list-group">
+          <li class="list-group-item mt-2" aria-current="true">
+            <div class="d-flex w-100 justify-content-between">
+                {% if task.done %}
+                    <div>
+                      <a class="btn btn-success btn-sm" href="{% url 'bord:check_task' task.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#done"></use></svg></a>
+                      <del class="text-muted">{{ task.text }}</del>
+                    </div>
+                {% else %}
+                    <div>
+                      <a class="btn btn-danger btn-sm" href="{% url 'bord:check_task' task.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#empty"></use></svg></a>
+                      {{ task.text }}
+                    </div>
+                {% endif %}
+                <div>
+                    <span data-toggle="popover" data-bs-trigger="hover focus" data-placement="top" data-bs-html="true" title="{{ task.users }}" data-bs-content="">
+                        <svg class="bi" width="16" height="16"><use xlink:href="#i-user"></use></svg>
+                    </span>
+                    <a href="{% url 'bord:edit_task' task.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-edit"></use></svg></a>
+                    <a href="{% url 'bord:delete_task' task.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-trash"></use></svg></a>
+                </div>
+            </div>
+          </li>
+        </ul>
+        {% empty %}
+        <p>Нема задач</p>
+    {% endfor %}
+    <a class="btn btn-primary mt-3" href="{% url 'bord:new_task' %}">+ Додати задачу</a>
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}

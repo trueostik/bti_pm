@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('search', views.search_view, name='search'),
     path('archive', views.archive, name='archive'),
+    path('todo', views.todo, name='todo'),
     path('add_to_archive/<int:subject_id>', views.add_to_archive, name='add_to_archive'),
     path('subject/<int:subject_id>/', views.subject_view, name='subject'),
     path('new_subject/', views.new_subject, name='new_subject'),
@@ -22,5 +23,10 @@ urlpatterns = [
     path('check_subtask/<int:subtask_id>/', views.check_subtask, name='check_subtask'),
     path('edit_subtask/<int:subtask_id>', views.edit_subtask, name='edit_subtask'),
     path('delete_subtask/<int:subtask_id>', views.delete_subtask, name='delete_subtask'),
+    path('new_task/', views.new_task, name='new_task'),
+    path('check_task/<int:task_id>/', views.check_task, name='check_task'),
+    path('edit_task/<int:task_id>', views.edit_task, name='edit_task'),
+    path('delete_task/<int:task_id>', views.delete_task, name='delete_task'),
+
 
 ]
