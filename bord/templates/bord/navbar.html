@@ -23,22 +23,27 @@
       </ul>
       <form class="d-flex" role="search" id="search-form" method="get" action="{% url 'bord:search' %}">
         <input class="form-control me-2" type="text" placeholder="Пошук" aria-label="Search" name="query">
-        <button class="btn btn-sm btn-outline-success me-2" type="submit">Пошук</button>
+        <button class="btn btn-sm btn-outline-success me-2" type="submit">
+          <span class="d-inline-flex align-items-center">
+            <svg class="bi" width="16" height="16"><use xlink:href="#i-search"></use></svg>
+            <span class="ms-1">Пошук</span>
+          </span>
+        </button>
       </form>
         <ul class="navbar-nav ml-auto">
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="btn btn-outline-primary me-2">{{ user.username }}</a>
+                    <a class="btn btn-outline-primary me-2"><svg class="bi" width="16" height="16"><use xlink:href="#i-user"></use></svg> {{ user.username }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-outline-warning" href="{% url 'users:logout' %}">Вийти</a>
+                    <a class="btn btn-outline-warning" href="{% url 'users:logout' %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-signout"></use></svg> Вийти</a>
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="btn btn-primary me-2" href="{% url 'users:register' %}">Зареєтруватися</a>
+                    <a class="btn btn-primary me-2" href="{% url 'users:register' %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-user"></use></svg> Зареєтруватися</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-warning me-2" href="{% url 'users:login' %}">Увійти</a>
+                    <a class="btn btn-warning me-2" href="{% url 'users:login' %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-signin"></use></svg> Увійти</a>
                 </li>
             {% endif %}
         </ul>

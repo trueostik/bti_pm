@@ -240,16 +240,21 @@ def check_task(request, task_id):
 
 def edit_task(request, task_id):
     task = Task.objects.get(id=task_id)
-
+    current_user = request.user
+    users = User.objects.exclude(pk=current_user.pk)
     if request.method != 'POST':
         form = TaskForm(instance=task)
     else:
         form = TaskForm(instance=task, data=request.POST)
         if form.is_valid():
             form.save()
+            users_selected = request.POST.getlist('users')  # Отримати список обраних користувачів
+            users = User.objects.filter(pk__in=users_selected)  # Отримати об'єкти користувачів за їх ID
+            task.user.set(users)  # Додати обраних користувачів до поля user завдання
+            task.user.add(current_user)
             return redirect('bord:todo')
 
-    context = {'task': task, 'form': form}
+    context = {'task': task, 'form': form, 'users': users}
     return render(request, 'bord/edit_task.html', context)
 
 
