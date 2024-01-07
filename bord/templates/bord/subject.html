@@ -28,7 +28,25 @@
                 {% endif %}
                 <div>
                     <a href="{% url 'bord:edit_subtask' subtask.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-edit"></use></svg></a>
-                    <a href="{% url 'bord:delete_subtask' subtask.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-trash"></use></svg></a>
+                    <svg class="bi" width="16" height="16" data-bs-toggle="modal" data-bs-target="#deleteSubtaskModal{{ subtask.id }}"><use xlink:href="#i-trash"></use></svg>
+                <!-- deleteSubtaskModal -->
+                    <div class="modal fade" id="deleteSubtaskModal{{ subtask.id }}" tabindex="-1" aria-labelledby="deleteSubtaskModalLabel{{ subtask.id }}" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="deleteSubtaskModalLabel{{ subtask.id }}">Видалення завдання</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            Завдання буде видалено!
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+                            <a class="btn btn-danger" href="{% url 'bord:delete_subtask' subtask.id %}">Видалити</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
             </div>
           </li>
@@ -44,10 +62,29 @@
           <li class="list-group-item mt-2" aria-current="true">
             <div class="d-flex w-100 justify-content-between">
               <p class="mb-1">{{ comment }}</p>
-
                 <div>
+
                     <a href="{% url 'bord:edit_comment' comment.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-edit"></use></svg></a>
-                    <a href="{% url 'bord:delete_comment' comment.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-trash"></use></svg></a>
+
+                    <svg class="bi" width="16" height="16" data-bs-toggle="modal" data-bs-target="#deleteCommentModal{{ comment.id }}"><use xlink:href="#i-trash"></use></svg>
+                <!-- deleteCommentModal -->
+                    <div class="modal fade" id="deleteCommentModal{{ comment.id }}" tabindex="-1" aria-labelledby="deleteCommentModalLabel{{ comment.id }}" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="deleteCommentModalLabel{{ comment.id }}">Видалення коментар</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            Коментар буде видалено!
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+                            <a class="btn btn-danger" href="{% url 'bord:delete_comment' comment.id %}">Видалити</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
             </div>
             <div class="d-flex w-100 justify-content-between">
@@ -60,16 +97,16 @@
         <p>Нема коментарів</p>
     {% endfor %}
     <a class="btn btn-primary mt-3" href="{% url 'bord:new_comment' subject.id %}">+ Додати коментар</a><br>
-    <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button type="button" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#deleteSubjectModal">
       <svg class="bi" width="16" height="16"><use xlink:href="#i-trash"></use></svg> Видалити об'єкт
     </button>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- deleteSubjectModal -->
+    <div class="modal fade" id="deleteSubjectModal" tabindex="-1" aria-labelledby="deleteSubjectModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Видалення об'єкта</h1>
+            <h1 class="modal-title fs-5" id="deleteSubjectModalLabel">Видалення об'єкта</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -82,5 +119,9 @@
         </div>
       </div>
     </div>
+
+
+
+
 
 {% endblock content %}

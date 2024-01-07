@@ -24,7 +24,25 @@
                         <svg class="bi" width="16" height="16"><use xlink:href="#i-user"></use></svg>
                     </span>
                     <a href="{% url 'bord:edit_task' task.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-edit"></use></svg></a>
-                    <a href="{% url 'bord:delete_task' task.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-trash"></use></svg></a>
+                    <svg class="bi" width="16" height="16" data-bs-toggle="modal" data-bs-target="#deleteTaskModal{{ task.id }}"><use xlink:href="#i-trash"></use></svg>
+                    <!-- deleteTaskModal -->
+                    <div class="modal fade" id="deleteTaskModal{{ task.id }}" tabindex="-1" aria-labelledby="deleteTaskModalLabel{{ task.id }}" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="deleteTaskModalLabel{{ task.id }}">Видалення завдання</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            Завдання буде видалено!
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+                            <a class="btn btn-danger" href="{% url 'bord:delete_task' task.id %}">Видалити</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
             </div>
           </li>
