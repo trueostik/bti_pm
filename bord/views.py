@@ -37,6 +37,7 @@ def archive(request):
 
 
 def todo(request):
+    print("todo")
     user = request.user
     tasks = Task.objects.filter(user=user).order_by('done', '-date_added')
     context = {'tasks': tasks}
@@ -258,3 +259,4 @@ def delete_task(*args, task_id):
 
     task.delete()
     return redirect('bord:todo')
+
