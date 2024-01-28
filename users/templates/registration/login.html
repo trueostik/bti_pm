@@ -1,18 +1,22 @@
 {% extends "bord/base.html" %}
 
-{% block content %}
 
+{% load crispy_forms_tags %}
+
+{% block content %}
     {% if form.errors %}
-        <p>Логін і пароль не співпадає. Спробуйте ще раз</p>
+        <p class="text-danger">Логін і пароль не співпадає. Спробуйте ще раз</p>
     {% endif %}
 
-    <form method="post" action="{% url 'users:login' %}">
+    <form method="post" action="{% url 'users:login' %}" class="form-signin w-50 m-auto">
         {% csrf_token %}
-        {{ form.as_p }}
 
-        <button name="submit">Увійти</button>
-        <input type="hidden" name="next"
-               value="{% url 'bord:index' %}" />
+        <h1 class="h3 mb-3 fw-normal">Вхід</h1>
+
+        {{ form|crispy }}
+        
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Увійти</button>
+
+        <input type="hidden" name="next" value="{% url 'bord:index' %}" />
     </form>
-
 {% endblock content %}
