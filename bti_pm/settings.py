@@ -77,20 +77,20 @@ WSGI_APPLICATION = 'bti_pm.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-"""
+
 if ENVIRONMENT == 'testserv':
- """   # Налаштування для PostgreSQL
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'btidb2',
-        'USER': 'trueostik2',
-        'PASSWORD': 'Mercury15',
-        'HOST': 'localhost',
-        'PORT': '',
+  # Налаштування для PostgreSQL
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'btidb2',
+            'USER': 'trueostik2',
+            'PASSWORD': 'Mercury15',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
     }
-}
-"""else:
+else:
     # Налаштування для SQLite
     DATABASES = {
         'default': {
@@ -98,7 +98,7 @@ DATABASES = {
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-"""
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
