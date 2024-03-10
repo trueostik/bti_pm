@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'bti_pm.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-if ENVIRONMENT == 'testserv1':
+if ENVIRONMENT == 'testserv':
   # Налаштування для PostgreSQL
     DATABASES = {
         'default': {
