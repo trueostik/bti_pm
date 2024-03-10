@@ -84,7 +84,7 @@ if ENVIRONMENT == 'testserv':
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'btidb2',
-            'USER': 'trueostik2',
+            'USER': 'trueostik',
             'PASSWORD': 'Mercury15',
             'HOST': 'localhost',
             'PORT': '',

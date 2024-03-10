@@ -23,7 +23,7 @@ class Subject(models.Model):
 
     name = models.CharField(max_length=200)
     type = models.CharField(max_length=2, choices=TypeOfSubject.choices, default=TypeOfSubject.HOUSE)
-    priority = models.CharField(max_length=3, choices=Priority.choices, default=Priority.NORMAL)
+    priority = models.CharField(max_length=3, choices=Priority.choices, default=Priority.HIGH)
     archived = models.BooleanField(default=False)
     address = models.CharField(max_length=200, blank=True)
     client_name = models.CharField(max_length=200, blank=True)
