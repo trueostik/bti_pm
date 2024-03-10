@@ -82,7 +82,7 @@ if ENVIRONMENT == 'testserv':
  """   # Налаштування для PostgreSQL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'btidb2',
         'USER': 'trueostik2',
         'PASSWORD': 'Mercury15',
