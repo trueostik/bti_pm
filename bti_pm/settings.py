@@ -1,9 +1,10 @@
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+ENVIRONMENT = os.getenv('DJANGO_ENVIRONMENT')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -14,9 +15,10 @@ SECRET_KEY = 'django-insecure-*un$)1*^1cqiesye)e8#ho4s8j#44w5fk(r()#)mir-glqx^n+
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'trueostik.ddns.net',
     'localhost',
     'bti-env.eu-north-1.elasticbeanstalk.com',
-    '192.168.0.9'
+    '192.168.0.169'
 ]
 
 
@@ -76,13 +78,26 @@ WSGI_APPLICATION = 'bti_pm.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if ENVIRONMENT == 'testserv':
+    # Налаштування для PostgreSQL
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'bti_db',
+            'USER': 'trueostik',
+            'PASSWORD': 'Mercury15',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
     }
-}
-
+else:
+    # Налаштування для SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -124,3 +139,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
