@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'btidb2',
         'USER': 'trueostik2',
         'PASSWORD': 'Mercury15',
-        'HOST': 'localhost',
+        'HOST': '192.168.0.0',
         'PORT': '',
     }
 }
