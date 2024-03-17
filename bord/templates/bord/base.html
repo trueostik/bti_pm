@@ -124,12 +124,22 @@
 
     {% include "bord/footer.html" %}
 </main>
-    <script>
+   <script>
         $(function () {
-            $('[data-toggle="popover"]').popover();
+            $('[data-toggle="popover1"]').popover();
         });
     </script>
-
+    <script>
+    $(function () {
+        $('[data-toggle="popover"]').popover({
+            placement: 'top', // Встановлюємо розташування popover на top
+            delay: {
+                show: 1000, // Затримка перед відображенням, в мілісекундах
+                hide: 0 // Затримка перед приховуванням, в мілісекундах
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

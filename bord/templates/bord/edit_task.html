@@ -1,14 +1,16 @@
 {% extends "bord/base.html" %}
+{% load django_bootstrap5 %}
 
 {% block content %}
 
       <div class="row">
-          <h4>Редагувати завдання:</h4>
-          <form action="{% url 'bord:edit_task' task.id %}" method="post" class="mt-4">
+          <form class="form-control mt-4" action="{% url 'bord:edit_task' task.id %}" method="post">
+              <h4>Редагувати завдання:</h4>
             {% csrf_token %}
             <div class="mb-3">
-              {{ form.as_p }}
+              {% bootstrap_form form %}
             </div>
+              {% block buttons %}
               <div class="dropdown">
                   <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Доручити
@@ -16,7 +18,7 @@
                   <ul class="dropdown-menu">
                       {% for user in users %}
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" name="users" value="{{ user.id }}" id="user_{{ user.id }}" {% if user in selected_users %}checked{% endif %}>
+                          <input class="form-check-input ms-1" type="checkbox" name="users" value="{{ user.id }}" id="user_{{ user.id }}" {% if user in selected_users %}checked{% endif %}>
                           <label class="form-check-label" for="user_{{ user.id }}">
                             {{ user }}
                           </label>
@@ -24,7 +26,8 @@
                       {% endfor %}
                   </ul>
                 </div>
-            <button type="submit" class="btn btn-primary mt-2">Зберегти</button>
+                <button type="submit" class="btn btn-primary mt-2">Зберегти</button>
+              {% endblock buttons %}
           </form>
       </div>
 
