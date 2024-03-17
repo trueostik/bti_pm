@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 from .models import Subject, Comment, Subtask, User, Task
 from .forms import SubjectForm, CommentForm, SubtaskForm, TaskForm
 
 
+@login_required()
 def index(request):
     subjects = Subject.objects.order_by('priority', '-date_added')
     context = {'subjects': subjects}
@@ -13,6 +15,7 @@ def index(request):
     return render(request, 'bord/index.html', context)
 
 
+@login_required()
 def search_view(request):
     query = request.GET.get('query', '')
     if query:
@@ -30,12 +33,14 @@ def search_view(request):
     return render(request, 'bord/search_results.html', {'results': results, 'query': query})
 
 
+@login_required()
 def archive(request):
     subjects = Subject.objects.order_by('-date_added')
     context = {'subjects': subjects}
     return render(request, 'bord/archive.html', context)
 
 
+@login_required()
 def todo(request):
     user = request.user
     tasks = Task.objects.filter(user=user).order_by('done', '-date_added')
@@ -43,6 +48,7 @@ def todo(request):
     return render(request, 'bord/todo.html', context)
 
 
+@login_required()
 def subject_view(request, subject_id):
     subject = Subject.objects.get(id=subject_id)
     comments = subject.comment_set.order_by('-date_added')
@@ -51,6 +57,7 @@ def subject_view(request, subject_id):
     return render(request, 'bord/subject.html', context)
 
 
+@login_required()
 def new_subject(request):
     if request.method != 'POST':
         form = SubjectForm()
@@ -64,6 +71,7 @@ def new_subject(request):
     return render(request, 'bord/new_subject.html', context)
 
 
+@login_required()
 def edit_subject(request, subject_id):
     subject = Subject.objects.get(id=subject_id)
 
@@ -79,6 +87,7 @@ def edit_subject(request, subject_id):
     return render(request, 'bord/edit_subject.html', context)
 
 
+@login_required()
 def delete_subject(*args, subject_id):
     subject = Subject.objects.get(id=subject_id)
 
@@ -86,6 +95,7 @@ def delete_subject(*args, subject_id):
     return redirect('bord:index')
 
 
+@login_required()
 def new_comment(request, subject_id):
     subject = Subject.objects.get(id=subject_id)
     if request.method != 'POST':
@@ -106,6 +116,7 @@ def new_comment(request, subject_id):
     return render(request, 'bord/new_comment.html', context)
 
 
+@login_required()
 def edit_comment(request, comment_id):
     comment = Comment.objects.get(id=comment_id)
     subject = comment.subject
@@ -122,6 +133,7 @@ def edit_comment(request, comment_id):
     return render(request, 'bord/edit_comment.html', context)
 
 
+@login_required()
 def delete_comment(*args, comment_id):
     comment = Comment.objects.get(id=comment_id)
     subject = comment.subject
@@ -130,6 +142,7 @@ def delete_comment(*args, comment_id):
     return redirect('bord:subject', subject_id=subject.id)
 
 
+@login_required()
 def change_status(request, subject_id, field):
     subject = Subject.objects.get(id=subject_id)
     field_value = getattr(subject, field)
@@ -138,6 +151,7 @@ def change_status(request, subject_id, field):
     return redirect('bord:index')
 
 
+@login_required()
 def change_priority(request, subject_id, priority):
     subject = Subject.objects.get(id=subject_id)
     subject.priority = priority
@@ -145,6 +159,7 @@ def change_priority(request, subject_id, priority):
     return redirect('bord:index')
 
 
+@login_required()
 def add_to_archive(request, subject_id):
     subject = Subject.objects.get(id=subject_id)
     if subject.archived:
@@ -157,6 +172,7 @@ def add_to_archive(request, subject_id):
     return redirect('bord:index')
 
 
+@login_required()
 def new_subtask(request, subject_id):
     subject = Subject.objects.get(id=subject_id)
     if request.method != 'POST':
@@ -173,6 +189,7 @@ def new_subtask(request, subject_id):
     return render(request, 'bord/new_subtask.html', context)
 
 
+@login_required()
 def check_subtask(request, subtask_id):
     subtask = Subtask.objects.get(id=subtask_id)
     subject = subtask.subject
@@ -184,6 +201,7 @@ def check_subtask(request, subtask_id):
     return redirect('bord:subject', subject_id=subject.id)
 
 
+@login_required()
 def edit_subtask(request, subtask_id):
     subtask = Subtask.objects.get(id=subtask_id)
     subject = subtask.subject
@@ -200,6 +218,7 @@ def edit_subtask(request, subtask_id):
     return render(request, 'bord/edit_subtask.html', context)
 
 
+@login_required()
 def delete_subtask(*args, subtask_id):
     subtask = Subtask.objects.get(id=subtask_id)
     subject = subtask.subject
@@ -208,9 +227,10 @@ def delete_subtask(*args, subtask_id):
     return redirect('bord:subject', subject_id=subject.id)
 
 
+@login_required()
 def new_task(request):
     current_user = request.user
-    users = User.objects.exclude(pk=current_user.pk)
+    users = User.objects.exclude(pk=current_user.pk).exclude(username='admin')
     if request.method != 'POST':
         form = TaskForm()
     else:
@@ -228,6 +248,7 @@ def new_task(request):
     return render(request, 'bord/new_task.html', context)
 
 
+@login_required()
 def check_task(request, task_id):
     task = Task.objects.get(id=task_id)
     if task.done:
@@ -238,26 +259,33 @@ def check_task(request, task_id):
     return redirect('bord:todo')
 
 
+@login_required()
 def edit_task(request, task_id):
-    task = Task.objects.get(id=task_id)
-    current_user = request.user
-    users = User.objects.exclude(pk=current_user.pk)
-    if request.method != 'POST':
-        form = TaskForm(instance=task)
-    else:
-        form = TaskForm(instance=task, data=request.POST)
+    task = get_object_or_404(Task, id=task_id)
+    selected_users = task.user.all()
+
+    users = User.objects.exclude(pk=request.user.pk).exclude(username='admin')
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
-            users_selected = request.POST.getlist('users')  # Отримати список обраних користувачів
-            users = User.objects.filter(pk__in=users_selected)  # Отримати об'єкти користувачів за їх ID
-            task.user.set(users)  # Додати обраних користувачів до поля user завдання
-            task.user.add(current_user)
+            users_selected = request.POST.getlist('users')
+            if users_selected:
+                users = User.objects.filter(pk__in=users_selected)
+                task.user.set(users)
+                task.user.add(request.user)
+            else:
+                task.user.clear()
             return redirect('bord:todo')
+    else:
+        form = TaskForm(instance=task)
 
-    context = {'task': task, 'form': form, 'users': users}
+    context = {'task': task, 'form': form, 'users': users, 'selected_users': selected_users}
     return render(request, 'bord/edit_task.html', context)
 
 
+@login_required()
 def delete_task(*args, task_id):
     task = Task.objects.get(id=task_id)
 
