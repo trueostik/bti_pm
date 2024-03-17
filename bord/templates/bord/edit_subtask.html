@@ -1,11 +1,16 @@
 {% extends "bord/base.html" %}
+{% load django_bootstrap5 %}
 
 {% block content %}
-    <h4>Редагувати задачу:</h4>
+    <h2>{{ subject }}</h2>
 
-    <form action="{% url 'bord:edit_subtask' subtask.id %}" method="post">
+    <form class="form-control" action="{% url 'bord:edit_subtask' subtask.id %}" method="post">
+        <h4>Редагувати задачу:</h4>
         {% csrf_token %}
-        {{ form.as_p }}
-        <button name="submit">Зберегти</button>
+        {% bootstrap_form form %}
+        {% block buttons %}
+            <button class="btn btn-primary" name="submit">Зберегти</button>
+        {% endblock buttons %}
     </form>
+
 {% endblock content %}

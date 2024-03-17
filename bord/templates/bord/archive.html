@@ -32,8 +32,9 @@
                     <p class="card-text text-center mt-0"><small class="">{{ subject.invent_number }}</small></p>
                   <p class="card-text ">{{ subject.address }}</p>
                     <div class="text-center" >
-
-                         <a class="btn btn-success" href="{% url 'bord:add_to_archive' subject.id %}"><svg class="bi" width="24" height="24"><use xlink:href="#i-archive"></use></svg></a>
+                        <span data-toggle="popover" data-bs-trigger="hover focus" data-placement="top" data-bs-html="true" title="Розархівувати">
+                            <a class="btn btn-success" href="{% url 'bord:add_to_archive' subject.id %}"><svg class="bi" width="24" height="24"><use xlink:href="#i-archive"></use></svg></a>
+                        </span>
                     </div>
 
                   <span class="card-text"><small class="text-muted">{{ subject.date_added|date:'d.m.Y' }}</small></span>

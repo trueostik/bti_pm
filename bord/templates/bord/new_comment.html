@@ -1,12 +1,17 @@
 {% extends "bord/base.html" %}
+{% load django_bootstrap5 %}
 
 {% block content %}
     <h2>{{ subject }}</h2>
-    <h4>Новий коментар:</h4>
-
-    <form action="{% url 'bord:new_comment' subject.id %}" method="post">
+    <form class="form-control" action="{% url 'bord:new_comment' subject.id %}" method="post">
+        <h4>Новий коментар:</h4>
         {% csrf_token %}
-        {{ form.as_p }}
-        <button name="submit">Додати коментар</button>
+        {% bootstrap_form form %}
+        {% block buttons %}
+            <button class="btn btn-primary" name="submit">Додати коментар</button>
+        {% endblock buttons %}
     </form>
+
+
+
 {% endblock content %}

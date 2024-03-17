@@ -1,14 +1,16 @@
 {% extends "bord/base.html" %}
+{% load django_bootstrap5 %}
 
 {% block content %}
 
       <div class="row">
-          <h4>Нова задача:</h4>
-          <form action="{% url 'bord:new_task' %}" method="post" class="mt-4">
+          <form class="form-control mt-4" action="{% url 'bord:new_task' %}" method="post" >
+              <h4>Нова задача:</h4>
             {% csrf_token %}
             <div class="mb-3">
-              {{ form.as_p }}
+              {% bootstrap_form form %}
             </div>
+              {% block buttons %}
               <div class="dropdown">
                   <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Доручити
@@ -24,7 +26,8 @@
                       {% endfor %}
                   </ul>
                 </div>
-            <button type="submit" class="btn btn-primary mt-2">Додати задачу</button>
+                <button type="submit" class="btn btn-primary mt-2">Додати задачу</button>
+              {% endblock buttons %}
           </form>
       </div>
 
