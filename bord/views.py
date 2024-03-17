@@ -9,7 +9,8 @@ from .forms import SubjectForm, CommentForm, SubtaskForm, TaskForm
 @login_required()
 def index(request):
     subjects = Subject.objects.order_by('priority', '-date_added')
-    context = {'subjects': subjects}
+    subjects_count = Subject.objects.filter(archived=False).count()
+    context = {'subjects': subjects, 'subjects_count': subjects_count}
     for subject in subjects:
         subject.unfinished_subtasks_count = subject.subtask_set.filter(done=False).count()
     return render(request, 'bord/index.html', context)
@@ -36,7 +37,8 @@ def search_view(request):
 @login_required()
 def archive(request):
     subjects = Subject.objects.order_by('-date_added')
-    context = {'subjects': subjects}
+    subjects_count = Subject.objects.filter(archived=True).count()
+    context = {'subjects': subjects, 'subjects_count': subjects_count}
     return render(request, 'bord/archive.html', context)
 
 

@@ -3,7 +3,10 @@
 
 
 {% block content %}
-    <a class="btn btn-primary mb-3" href="{% url 'bord:new_subject' %}">+ Новий об'єкт</a>
+    <div class="d-flex w-100 justify-content-between">
+        <a class="btn btn-primary mb-3" href="{% url 'bord:new_subject' %}">+ Новий об'єкт</a>
+        <h4>Кількість об'єктів: {{ subjects_count }}</h4>
+    </div>
 
     <div class="row" data-masonry="{&quot;percentPosition&quot;: true }" style="position: relative; height: 1066.4px;">
         {% for subject in subjects %}

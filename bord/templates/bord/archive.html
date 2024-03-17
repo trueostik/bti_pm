@@ -3,7 +3,10 @@
 
 
 {% block content %}
-    <h3>Архів</h3>
+    <div class="d-flex w-100 justify-content-between">
+        <h3>Архів</h3>
+        <h4>Кількість архівних об'єктів: {{ subjects_count }}</h4>
+    </div>
 
     <div class="row" data-masonry="{&quot;percentPosition&quot;: true }" style="position: relative; height: 1066.4px;">
         {% for subject in subjects %}
