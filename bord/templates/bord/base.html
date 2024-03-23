@@ -139,7 +139,27 @@
             }
         });
     });
-</script>
+    </script>
+    <script>
+        $('#statusModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Кнопка, що викликала модальне вікно
+        var status = button.data('status');
+        var name = button.data('name');
+        var href = button.data('href');
+        var newсlass = button.data('newсlass');
+
+        // Використання інформації для зміни вмісту модального вікна
+        var modal = $(this);
+        modal.find('.modal-title').text('Новий статус: ' + name);
+        modal.find('.modal-body').text('Ви справді бажаєте змінити статус на "' + status + '" для об\'єкта  ' + name + '?');
+
+        // Приклад, як ви могли б змінити href для кнопки збереження
+        modal.find('a').attr({'href': href, 'class': newсlass}).text(status);
+        });
+
+
+    </script>
+
 
 </body>
 </html>

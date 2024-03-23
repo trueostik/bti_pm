@@ -33,28 +33,83 @@
                   <p class="card-text ">{{ subject.address }}</p>
                     <div class="text-center mb-2" >
                         <span data-toggle="popover" data-bs-trigger="hover focus" data-placement="top" data-bs-html="true" title="Поміряно">
-                            <a class="{{ subject.get_measured }}" href="{% url 'bord:change_status' subject.id 'measured' %}"><svg class="bi" width="24" height="24"><use xlink:href="#measured"></use></svg></a>
+                            <a class="{{ subject.get_measured }}" href="#" data-href="{% url 'bord:change_status' subject.id 'measured' %}"
+                               data-id="{{ subject.id }}" data-name="{{ subject.name }}"
+                               data-status="{% if not subject.measured %} Поміряно {% else %} Не поміряно {% endif %}"
+                               data-newсlass="{% if subject.measured %} btn btn-danger {% else %} btn btn-success {% endif %}"
+                               data-bs-toggle="modal" data-bs-target="#statusModal">
+                                <svg class="bi" width="24" height="24"><use xlink:href="#measured"></use></svg>
+                            </a>
                         </span>
                         <span data-toggle="popover" data-bs-trigger="hover focus" data-placement="top" data-bs-html="true" title="Накреслено">
-                             <a class="{{ subject.get_drawn }}" href="{% url 'bord:change_status' subject.id 'drawn' %}"><svg class="bi" width="24" height="24"><use xlink:href="#drawn"></use></svg></a>
+                             <a class="{{ subject.get_drawn }}" href="#" data-href="{% url 'bord:change_status' subject.id 'drawn' %}"
+                                data-id="{{ subject.id }}" data-name="{{ subject.name }}"
+                                data-status="{% if not subject.drawn %} Накреслено {% else %} Не накреслено {% endif %}"
+                                data-newсlass="{% if subject.drawn %} btn btn-danger {% else %} btn btn-success {% endif %}"
+                                data-bs-toggle="modal" data-bs-target="#statusModal">
+                                 <svg class="bi" width="24" height="24"><use xlink:href="#drawn"></use></svg>
+                             </a>
                         </span>
                         <span data-toggle="popover" data-bs-trigger="hover focus" data-placement="top" data-bs-html="true" title="Пораховано">
-                             <a class="{{ subject.get_calculated }}" href="{% url 'bord:change_status' subject.id 'calculated' %}"><svg class="bi" width="24" height="24"><use xlink:href="#calculated"></use></svg></a>
-                        </span>
-                        <span data-toggle="popover" data-bs-trigger="hover focus" data-placement="top" data-bs-html="true" title="Набрано">
-                             <a class="{{ subject.get_typed }}" href="{% url 'bord:change_status' subject.id 'typed' %}"><svg class="bi" width="24" height="24"><use xlink:href="#typed"></use></svg></a>
+                             <a class="{{ subject.get_calculated }}" href="#" data-href="{% url 'bord:change_status' subject.id 'calculated' %}"
+                                data-id="{{ subject.id }}" data-name="{{ subject.name }}"
+                                data-status="{% if not subject.calculated %} Пораховано {% else %} Не пораховано {% endif %}"
+                                data-newсlass="{% if subject.calculated %} btn btn-danger {% else %} btn btn-success {% endif %}"
+                                data-bs-toggle="modal" data-bs-target="#statusModal">
+                                 <svg class="bi" width="24" height="24"><use xlink:href="#calculated"></use></svg>
+                             </a>
                         </span>
                         <span data-toggle="popover" data-bs-trigger="hover focus" data-placement="top" data-bs-html="true" title="Розставлено">
-                             <a class="{{ subject.get_numbered }}" href="{% url 'bord:change_status' subject.id 'numbered' %}"><svg class="bi" width="24" height="24"><use xlink:href="#numbered"></use></svg></a>
+                             <a class="{{ subject.get_numbered }}" href="#" data-href="{% url 'bord:change_status' subject.id 'numbered' %}"
+                                data-id="{{ subject.id }}" data-name="{{ subject.name }}"
+                                data-status="{% if not subject.numbered %} Розставлено {% else %} Не розставлено {% endif %}"
+                                data-newсlass="{% if subject.numbered %} btn btn-danger {% else %} btn btn-success {% endif %}"
+                                data-bs-toggle="modal" data-bs-target="#statusModal">
+                                 <svg class="bi" width="24" height="24"><use xlink:href="#numbered"></use></svg>
+                             </a>
+                        </span>
+                        <span data-toggle="popover" data-bs-trigger="hover focus" data-placement="top" data-bs-html="true" title="Набрано">
+                             <a class="{{ subject.get_typed }}" href="#" data-href="{% url 'bord:change_status' subject.id 'typed' %}"
+                                data-id="{{ subject.id }}" data-name="{{ subject.name }}"
+                                data-status="{% if not subject.typed %} Набрано {% else %} Не набрано {% endif %}"
+                                data-newсlass="{% if subject.typed %} btn btn-danger {% else %} btn btn-success {% endif %}"
+                                data-bs-toggle="modal" data-bs-target="#statusModal">
+                                 <svg class="bi" width="24" height="24"><use xlink:href="#typed"></use></svg>
+                             </a>
                         </span>
                         <span data-toggle="popover" data-bs-trigger="hover focus" data-placement="top" data-bs-html="true" title="Готово">
-                             <a class="{{ subject.get_done }}" href="{% url 'bord:change_status' subject.id 'done' %}"><svg class="bi" width="24" height="24"><use xlink:href="#done"></use></svg></a>
+                             <a class="{{ subject.get_done }}" href="#" data-href="{% url 'bord:change_status' subject.id 'done' %}"
+                                data-id="{{ subject.id }}" data-name="{{ subject.name }}"
+                                data-status="{% if not subject.done %} Готово {% else %} Не готово {% endif %}"
+                                data-newсlass="{% if subject.done %} btn btn-danger {% else %} btn btn-success {% endif %}"
+                                data-bs-toggle="modal" data-bs-target="#statusModal">
+                                 <svg class="bi" width="24" height="24"><use xlink:href="#done"></use></svg>
+                             </a>
                         </span>
 
                          {% if subject.done %}
                          <span data-toggle="popover" data-bs-trigger="hover focus" data-placement="top" data-bs-html="true" title="Архівувати">
-                            <a class="btn btn-danger" href="{% url 'bord:add_to_archive' subject.id %}"><svg class="bi" width="24" height="24"><use xlink:href="#i-archive"></use></svg></a>
+                            <a class="btn btn-danger" href="#" data-bs-toggle="modal" data-bs-target="#archiveModal{{ subject.id }}">
+                                <svg class="bi" width="24" height="24"><use xlink:href="#i-archive"></use></svg></a>
                          </span>
+                            <!-- Модальне вікно архіву -->
+                            <div class="modal fade" id="archiveModal{{ subject.id }}" tabindex="-1" aria-labelledby="archiveModalLabel{{ subject.id }}" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="archiveModalLabel{{ subject.id }}">Архівувати: {{ subject.name }}</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    Ви справді бажаєте відправити в архів об'єкт {{ subject.name }}?
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a class="btn btn-success" href="{% url 'bord:add_to_archive' subject.id %}">Архівувати</a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                          {% endif %}
                     </div>
                   <div class="d-flex w-100 justify-content-between">
@@ -96,6 +151,22 @@
     </div>
 
 
-
+    <!-- Модальне вікно статусу -->
+    <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="statusModalLabel">Заголовок модального вікна</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
+          </div>
+          <div class="modal-body">
+            Зміст модального вікна...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+            <a class="#" href="#">Save</a>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock content %}
-
