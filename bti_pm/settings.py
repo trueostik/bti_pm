@@ -15,10 +15,11 @@ SECRET_KEY = 'django-insecure-*un$)1*^1cqiesye)e8#ho4s8j#44w5fk(r()#)mir-glqx^n+
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'BTI777.asuscomm.com',
     'trueostik.ddns.net',
     'localhost',
     'bti-env.eu-north-1.elasticbeanstalk.com',
-    '192.168.0.169'
+    '192.168.0.169',
 ]
 
 
@@ -86,6 +87,18 @@ if ENVIRONMENT == 'testserv':
             'NAME': 'btidb2',
             'USER': 'trueostik',
             'PASSWORD': 'Mercury15',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
+    }
+elif ENVIRONMENT == 'btiserv':
+  # Налаштування для PostgreSQL
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'btidb',
+            'USER': 'bties',
+            'PASSWORD': 'BTIES2013',
             'HOST': 'localhost',
             'PORT': '',
         }
