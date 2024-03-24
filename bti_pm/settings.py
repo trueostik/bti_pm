@@ -9,10 +9,10 @@ ENVIRONMENT = os.getenv('DJANGO_ENVIRONMENT')
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*un$)1*^1cqiesye)e8#ho4s8j#44w5fk(r()#)mir-glqx^n+'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
     'BTI777.asuscomm.com',
