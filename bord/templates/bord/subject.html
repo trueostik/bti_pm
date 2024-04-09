@@ -1,14 +1,25 @@
 {% extends "bord/base.html" %}
 
 {% block content %}
-
     <h1>{{ subject }}<span class="badge bg-secondary">{{ subject.get_type_display }}</span></h1>
-    <p> Адреса: {{ subject.address }}</p>
-    <p> Ім'я замовника: {{ subject.client_name }}</p>
-    <p> Номер телефону: {{ subject.client_number }}</p>
-    <p> Інвентаризаційний номер: {{ subject.invent_number }}</p>
-    <p> Дата створення: {{ subject.date_added|date:'d.m.Y' }}</p>
-    <a class="btn btn-primary" href="{% url 'bord:edit_subject' subject.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-edit"></use></svg> Редагувати</a>
+    <div class="form-control">
+        <p> Адреса: {{ subject.address }}</p>
+        <p> Ім'я замовника: {{ subject.client_name }}</p>
+        <p> Номер телефону: {{ subject.client_number }}</p>
+        <p> Інвентаризаційний номер: {{ subject.invent_number }}</p>
+        <p> Дата створення: {{ subject.date_added|date:'d.m.Y' }}</p>
+        {% if contacts %}
+            <h4>Контакти:</h4>
+            {% for contact in contacts %}
+                <div class="form-control mb-2">
+                    <p class="mb-1">Ім'я: {{ contact.name }}</p>
+                    <p class="mb-1">Номер: {{ contact.number }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <a class="btn btn-primary mt-3" href="{% url 'bord:edit_subject' subject.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-edit"></use></svg> Редагувати</a>
+
 
     <h4 class="mt-5">Задачі:</h4>
     {% for subtask in subtasks %}

@@ -9,7 +9,8 @@ ENVIRONMENT = os.getenv('DJANGO_ENVIRONMENT')
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+#SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'django-insecure-&g_1y1-a2o=yk)jauh^^a7qqvyg8i0$@b)tb977(mqp&54t=41'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
@@ -104,11 +105,14 @@ elif ENVIRONMENT == 'btiserv':
         }
     }
 else:
-    # Налаштування для SQLite
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'devdb',
+            'USER': 'trueostik',
+            'PASSWORD': 'Mercury15',
+            'HOST': 'localhost',
+            'PORT': '',
         }
     }
 

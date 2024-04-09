@@ -55,7 +55,8 @@ def subject_view(request, subject_id):
     subject = Subject.objects.get(id=subject_id)
     comments = subject.comment_set.order_by('-date_added')
     subtasks = subject.subtask_set.order_by('done')
-    context = {'subject': subject, 'comments': comments, 'subtasks': subtasks}
+    contacts = subject.contact_set.all()
+    context = {'subject': subject, 'comments': comments, 'subtasks': subtasks, "contacts": contacts}
     return render(request, 'bord/subject.html', context)
 
 
