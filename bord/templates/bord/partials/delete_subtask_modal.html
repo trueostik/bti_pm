@@ -1,0 +1,15 @@
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title fs-5">Видалення завдання</h5>
+    </div>
+    <div class="modal-body">
+      <p>Завдання буде видалено!</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+      <button type="button" class="btn btn-danger" hx-delete="{% url 'bord:delete_subtask' subtask.id %}" hx-target="#subtasks" hx-swap="outerHTML" data-bs-dismiss="modal">Видалити</button>
+    </div>
+  </div>
+</div>
+

@@ -23,6 +23,7 @@ urlpatterns = [
     path('check_subtask/<int:subtask_id>/', views.check_subtask, name='check_subtask'),
     path('edit_subtask/<int:subtask_id>', views.edit_subtask, name='edit_subtask'),
     path('delete_subtask/<int:subtask_id>', views.delete_subtask, name='delete_subtask'),
+    path('delete_subtask_modal/<int:subtask_id>', views.delete_subtask_modal, name='delete_subtask_modal'),
     path('new_task/', views.new_task, name='new_task'),
     path('check_task/<int:task_id>/', views.check_task, name='check_task'),
     path('edit_task/<int:task_id>', views.edit_task, name='edit_task'),

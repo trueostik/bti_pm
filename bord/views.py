@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 
 from .models import Subject, Comment, Subtask, User, Task
 from .forms import SubjectForm, CommentForm, SubtaskForm, TaskForm
@@ -194,14 +195,13 @@ def new_subtask(request, subject_id):
 
 @login_required()
 def check_subtask(request, subtask_id):
-    subtask = Subtask.objects.get(id=subtask_id)
+    subtask = get_object_or_404(Subtask, id=subtask_id)
     subject = subtask.subject
-    if subtask.done:
-        subtask.done = False
-    else:
-        subtask.done = True
+    subtask.done = not subtask.done
     subtask.save()
-    return redirect('bord:subject', subject_id=subject.id)
+    subtasks = Subtask.objects.filter(subject=subject)
+
+    return render(request, 'bord/partials/subtask_list.html', {'subtasks': subtasks})
 
 
 @login_required()
@@ -221,14 +221,20 @@ def edit_subtask(request, subtask_id):
     return render(request, 'bord/edit_subtask.html', context)
 
 
-@login_required()
-def delete_subtask(*args, subtask_id):
+@require_http_methods(['DELETE'])
+def delete_subtask(request, subtask_id):
     subtask = Subtask.objects.get(id=subtask_id)
     subject = subtask.subject
 
     subtask.delete()
-    return redirect('bord:subject', subject_id=subject.id)
 
+    subtasks = Subtask.objects.filter(subject=subject)
+
+    return render(request, 'bord/partials/subtask_list.html', {'subtasks': subtasks})
+
+def delete_subtask_modal(request, subtask_id):
+    subtask = Subtask.objects.get(id=subtask_id)
+    return render(request, 'bord/partials/delete_subtask_modal.html', {'subtask': subtask})
 
 @login_required()
 def new_task(request):

@@ -1,0 +1,39 @@
+<div id="subtasks"
+  hx-target="#subtasks"
+  hx-swap="outerHTML">
+  {% for subtask in subtasks %}
+    <ul class="list-group">
+      <li class="list-group-item mt-2" aria-current="true">
+        <div class="d-flex w-100 justify-content-between">
+            {% if subtask.done %}
+                <div>
+                  <button class="btn btn-success btn-sm" hx-get="{% url 'bord:check_subtask' subtask.id %}" hx-trigger="click"><svg class="bi" width="16" height="16"><use xlink:href="#done"></use></svg></button>
+                  <del class="text-muted">{{ subtask }}</del>
+                </div>
+            {% else %}
+                <div>
+                  <button class="btn btn-danger btn-sm" hx-get="{% url 'bord:check_subtask' subtask.id %}" hx-trigger="click"><svg class="bi" width="16" height="16"><use xlink:href="#empty"></use></svg></button>
+                  {{ subtask }}
+                </div>
+            {% endif %}
+            <div>
+                <a href="{% url 'bord:edit_subtask' subtask.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-edit"></use></svg></a>
+                <svg class="bi" width="16" height="16" hx-get="/delete_subtask_modal/{{ subtask.id }}" hx-target="#modals-here .modal-content" hx-trigger="click" data-bs-toggle="modal" data-bs-target="#modals-here"><use xlink:href="#i-trash"></use></svg>
+            </div>
+        </div>
+      </li>
+    </ul>
+    {% empty %}
+        <p>Нема задач</p>
+    {% endfor %}
+</div>
+
+<div id="modals-here"
+    class="modal modal-blur fade"
+    style="display: none"
+    aria-hidden="true"
+    tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div>

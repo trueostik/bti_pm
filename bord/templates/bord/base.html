@@ -1,3 +1,5 @@
+{% load django_htmx %}
+{% django_htmx_script %}
 {% load static %}
 {% load django_bootstrap5 %}
 
@@ -9,6 +11,9 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+    <script src="https://unpkg.com/htmx.org@1.0.0/dist/htmx.min.js"></script>
+
     <title>Board</title>
 {% bootstrap_css %}
 {% bootstrap_javascript %}
@@ -124,6 +129,11 @@
 
     {% include "bord/footer.html" %}
 </main>
+    <script>
+      document.body.addEventListener('htmx:configRequest', (event) => {
+        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+      })
+    </script>
    <script>
         $(function () {
             $('[data-toggle="popover1"]').popover();
