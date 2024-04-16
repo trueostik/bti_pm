@@ -8,6 +8,11 @@
     <form class="form-control" action="{% url 'bord:edit_subject' subject.id %}" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
+        <div>Контакти:
+            {% for contact in contacts %}
+                {% include "bord/partials/contact.html" %}
+            {% endfor %}
+        </div>
         {% block buttons %}
             <button class="btn btn-primary" name="submit">Зберегти</button>
         {% endblock buttons %}

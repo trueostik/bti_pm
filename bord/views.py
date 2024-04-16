@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 
-from .models import Subject, Comment, Subtask, User, Task
-from .forms import SubjectForm, CommentForm, SubtaskForm, TaskForm
+from .models import Subject, Comment, Subtask, User, Task, Contact
+from .forms import SubjectForm, CommentForm, SubtaskForm, TaskForm, ContactForm
 
 
 @login_required()
@@ -57,7 +58,7 @@ def subject_view(request, subject_id):
     comments = subject.comment_set.order_by('-date_added')
     subtasks = subject.subtask_set.order_by('done')
     contacts = subject.contact_set.all()
-    context = {'subject': subject, 'comments': comments, 'subtasks': subtasks, "contacts": contacts}
+    context = {'subject': subject, 'comments': comments, 'subtasks': subtasks, 'contacts': contacts}
     return render(request, 'bord/subject.html', context)
 
 
@@ -87,7 +88,8 @@ def edit_subject(request, subject_id):
             form.save()
             return redirect('bord:subject', subject_id=subject.id)
 
-    context = {'subject': subject, 'form': form}
+    contacts = subject.contact_set.all()
+    context = {'subject': subject, 'form': form, 'contacts': contacts}
     return render(request, 'bord/edit_subject.html', context)
 
 
@@ -221,6 +223,7 @@ def edit_subtask(request, subtask_id):
     return render(request, 'bord/edit_subtask.html', context)
 
 
+@login_required()
 @require_http_methods(['DELETE'])
 def delete_subtask(request, subtask_id):
     subtask = Subtask.objects.get(id=subtask_id)
@@ -232,6 +235,8 @@ def delete_subtask(request, subtask_id):
 
     return render(request, 'bord/partials/subtask_list.html', {'subtasks': subtasks})
 
+
+@login_required()
 def delete_subtask_modal(request, subtask_id):
     subtask = Subtask.objects.get(id=subtask_id)
     return render(request, 'bord/partials/delete_subtask_modal.html', {'subtask': subtask})
@@ -301,3 +306,26 @@ def delete_task(*args, task_id):
     task.delete()
     return redirect('bord:todo')
 
+
+def contact(request, contact_id):
+    contact = Contact.objects.get(id=contact_id)
+    context = {'contact': contact}
+    return render(request, 'bord/partials/contact.html', context)
+
+
+@csrf_exempt
+@login_required()
+def edit_contact(request, contact_id):
+    contact = Contact.objects.get(id=contact_id)
+    subject = contact.subject
+    if request.method != 'POST':
+        form = ContactForm(instance=contact)
+    else:
+        form = ContactForm(instance=contact, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('bord:contact', contact_id=contact_id)
+
+    contacts = subject.contact_set.all()
+    context = {'subject': subject, 'form': form, 'contact': contact}
+    return render(request, 'bord/partials/edit_contact.html', context)
