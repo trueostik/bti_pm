@@ -1,0 +1,12 @@
+{% load django_bootstrap5 %}
+<div class="form-control mb-2">
+    <form id="newContact" hx-post="{% url 'bord:new_contact' subject_id %}" hx-target="#contacts-list">
+        {% csrf_token %}
+        <input type="hidden" name="subject_id" value="{{ subject.id }}">
+        {% bootstrap_form form %}
+        {% block buttons %}
+            <button class="btn btn-outline-success" name="submit">Зберегти контакт</button>
+            <button class="btn btn-outline-danger" hx-get="{% url 'bord:contacts' subject_id %}">Скасувати</button>
+        {% endblock buttons %}
+    </form>
+</div>

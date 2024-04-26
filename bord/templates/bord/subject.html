@@ -12,8 +12,8 @@
             <h4>Контакти:</h4>
             {% for contact in contacts %}
                 <div class="form-control mb-2">
-                    <p class="mb-1">Ім'я: {{ contact.name }}</p>
-                    <p class="mb-1">Номер: {{ contact.number }}</p>
+                    <p class="mb-1">Ім'я: {{ contact.contact_name }}</p>
+                    <p class="mb-1">Номер: {{ contact.contact_number }}</p>
                 </div>
             {% endfor %}
         {% endif %}

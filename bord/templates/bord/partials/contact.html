@@ -1,7 +1,16 @@
-<div class="form-control mb-2" hx-target="this" hx-swap="outerHTML">
-    <p class="mb-1">Ім'я: {{ contact.name }}</p>
-    <p class="mb-1">Номер: {{ contact.number }}</p>
-    <button hx-get="/edit_contact/{{ contact.id }}" class="btn btn-outline-primary">
-    Редагувати контакт
-    </button>
+<div id="contacts-list">
+    {% for contact in contacts %}
+    <div class="form-control mb-2" id="contact-{{ contact.id }}" hx-target="this" hx-swap="outerHTML">
+        <p class="mb-1">Ім'я: {{ contact.contact_name }}</p>
+        <p class="mb-1">Номер: {{ contact.contact_number }}</p>
+        <button hx-get="/edit_contact/{{ contact.id }}" class="btn btn-outline-primary">
+        Редагувати контакт
+        </button>
+    </div>
+    {% endfor %}
+    <div id="newContactFormContainer" hx-swap="outerHTML">
+    </div>
 </div>
+
+
+

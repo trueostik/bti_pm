@@ -57,7 +57,7 @@ def subject_view(request, subject_id):
     subject = Subject.objects.get(id=subject_id)
     comments = subject.comment_set.order_by('-date_added')
     subtasks = subject.subtask_set.order_by('done')
-    contacts = subject.contact_set.all()
+    contacts = subject.contact_set.all().order_by('id')
     context = {'subject': subject, 'comments': comments, 'subtasks': subtasks, 'contacts': contacts}
     return render(request, 'bord/subject.html', context)
 
@@ -88,7 +88,7 @@ def edit_subject(request, subject_id):
             form.save()
             return redirect('bord:subject', subject_id=subject.id)
 
-    contacts = subject.contact_set.all()
+    contacts = subject.contact_set.all().order_by('id')
     context = {'subject': subject, 'form': form, 'contacts': contacts}
     return render(request, 'bord/edit_subject.html', context)
 
@@ -285,12 +285,9 @@ def edit_task(request, task_id):
         if form.is_valid():
             form.save()
             users_selected = request.POST.getlist('users')
-            if users_selected:
-                users = User.objects.filter(pk__in=users_selected)
-                task.user.set(users)
-                task.user.add(request.user)
-            else:
-                task.user.clear()
+            users = User.objects.filter(pk__in=users_selected)
+            task.user.set(users)
+            task.user.add(request.user)
             return redirect('bord:todo')
     else:
         form = TaskForm(instance=task)
@@ -305,6 +302,12 @@ def delete_task(*args, task_id):
 
     task.delete()
     return redirect('bord:todo')
+
+
+def contacts(request, subject_id):# Тестова штука дял закриття створення контакта
+    contacts = Contact.objects.filter(subject_id=subject_id).order_by('id')
+    context = {'contacts': contacts}
+    return render(request, 'bord/partials/contact.html', context)
 
 
 def contact(request, contact_id):
@@ -324,8 +327,24 @@ def edit_contact(request, contact_id):
         form = ContactForm(instance=contact, data=request.POST)
         if form.is_valid():
             form.save()
-            return redirect('bord:contact', contact_id=contact_id)
+            contacts = subject.contact_set.all().order_by('id')
+            return render(request, 'bord/partials/contact.html', {'contacts': contacts})
 
-    contacts = subject.contact_set.all()
     context = {'subject': subject, 'form': form, 'contact': contact}
     return render(request, 'bord/partials/edit_contact.html', context)
+
+
+@login_required()
+def new_contact(request, subject_id):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            new_contact = form.save(commit=False)
+            new_contact.subject = Subject.objects.get(id=subject_id)
+            new_contact.save()
+            contacts = Contact.objects.filter(subject_id=subject_id).order_by('id')
+            return render(request, 'bord/partials/contact.html', {'contacts': contacts})
+    else:
+        form = ContactForm()
+    return render(request, 'bord/partials/new_contact.html', {'form': form, 'subject_id': subject_id})
+

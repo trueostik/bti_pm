@@ -128,8 +128,8 @@ class Task (models.Model):
 
 class Contact (models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
-    number = models.CharField(max_length=20)
+    contact_name = models.CharField(max_length=50)
+    contact_number = models.CharField(max_length=20)
 
     def __str__(self):
-        return f"{self.subject}, {self.name}"
+        return f"{self.subject}, {self.contact_name}"

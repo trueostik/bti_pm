@@ -44,5 +44,5 @@ class TaskForm(forms.ModelForm):
 class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
-        fields = ['name', 'number']
-        labels = {'name': "Ім'я", 'number': 'Номер телефону'}
+        fields = ['contact_name', 'contact_number']
+        labels = {'contact_name': "Ім'я", 'contact_number': 'Номер телефону'}
