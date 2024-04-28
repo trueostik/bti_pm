@@ -32,5 +32,7 @@ urlpatterns = [
     path('contact/<int:contact_id>/', views.contact, name='contact'),
     path('new_contact/<int:subject_id>/', views.new_contact, name='new_contact'),
     path('edit_contact/<int:contact_id>/', views.edit_contact, name='edit_contact'),
+    path('delete_contact/<int:contact_id>', views.delete_contact, name='delete_contact'),
+    path('delete_contact_modal/<int:contact_id>', views.delete_contact_modal, name='delete_contact_modal'),
 
 ]

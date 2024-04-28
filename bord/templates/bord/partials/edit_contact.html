@@ -5,7 +5,7 @@
     {% bootstrap_form form %}
     {% block buttons %}
         <button class="btn btn-outline-success">Зберегти контакт</button>
-        <button class="btn btn-outline-danger" hx-target="#contacts-list">Скасувати</button>
+        <button class="btn btn-outline-danger" hx-get="/contacts/{{ subject.id }}">Скасувати</button>
     {% endblock buttons %}
 </form>
 

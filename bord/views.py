@@ -201,7 +201,7 @@ def check_subtask(request, subtask_id):
     subject = subtask.subject
     subtask.done = not subtask.done
     subtask.save()
-    subtasks = Subtask.objects.filter(subject=subject)
+    subtasks = Subtask.objects.filter(subject=subject).order_by('done', 'id')
 
     return render(request, 'bord/partials/subtask_list.html', {'subtasks': subtasks})
 
@@ -231,7 +231,7 @@ def delete_subtask(request, subtask_id):
 
     subtask.delete()
 
-    subtasks = Subtask.objects.filter(subject=subject)
+    subtasks = Subtask.objects.filter(subject=subject).order_by('done', 'id')
 
     return render(request, 'bord/partials/subtask_list.html', {'subtasks': subtasks})
 
@@ -252,9 +252,9 @@ def new_task(request):
         if form.is_valid():
             new_task = form.save(commit=False)
             new_task.save()
-            users_selected = request.POST.getlist('users')  # Отримати список обраних користувачів
-            users = User.objects.filter(pk__in=users_selected)  # Отримати об'єкти користувачів за їх ID
-            new_task.user.set(users)  # Додати обраних користувачів до поля user завдання
+            users_selected = request.POST.getlist('users')
+            users = User.objects.filter(pk__in=users_selected)
+            new_task.user.set(users)
             new_task.user.add(current_user)
             return redirect('bord:todo')
 
@@ -304,12 +304,14 @@ def delete_task(*args, task_id):
     return redirect('bord:todo')
 
 
-def contacts(request, subject_id):# Тестова штука дял закриття створення контакта
+@login_required()
+def contacts(request, subject_id):
     contacts = Contact.objects.filter(subject_id=subject_id).order_by('id')
     context = {'contacts': contacts}
     return render(request, 'bord/partials/contact.html', context)
 
 
+@login_required()
 def contact(request, contact_id):
     contact = Contact.objects.get(id=contact_id)
     context = {'contact': contact}
@@ -348,3 +350,18 @@ def new_contact(request, subject_id):
         form = ContactForm()
     return render(request, 'bord/partials/new_contact.html', {'form': form, 'subject_id': subject_id})
 
+
+@login_required()
+@require_http_methods(['DELETE'])
+def delete_contact(request, contact_id):
+    contact = Contact.objects.get(id=contact_id)
+    subject = contact.subject
+    contact.delete()
+    contacts = Contact.objects.filter(subject=subject)
+    return render(request, 'bord/partials/contact.html', {'contacts': contacts})
+
+
+@login_required()
+def delete_contact_modal(request, contact_id):
+    contact = Contact.objects.get(id=contact_id)
+    return render(request, 'bord/partials/delete_contact_modal.html', {'contact': contact})

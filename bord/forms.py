@@ -1,5 +1,6 @@
 from django import forms
-
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Field, Submit
 from .models import Subject, Comment, Subtask, Task, Contact
 
 
@@ -46,3 +47,5 @@ class ContactForm(forms.ModelForm):
         model = Contact
         fields = ['contact_name', 'contact_number']
         labels = {'contact_name': "Ім'я", 'contact_number': 'Номер телефону'}
+
+
