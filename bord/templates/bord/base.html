@@ -8,13 +8,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.png' %}">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
-    <!-- <script src="{% static 'htmx.min.js' %}" defer></script> -->
-    <script src="https://unpkg.com/htmx.org@1.0.0/dist/htmx.min.js"></script>
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+    <!-- <script src="https://unpkg.com/htmx.org@1.0.0/dist/htmx.min.js"></script> -->
 
-    <title>Board</title>
+    <title>Дошка</title>
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
@@ -72,7 +73,9 @@
         <symbol id="i-signout" viewBox="0 0 32 32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
             <path d="M28 16 L8 16 M20 8 L28 16 20 24 M11 28 L3 28 3 4 11 4" />
         </symbol>
-
+        <symbol id="i-filter" viewBox="0 0 32 32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            <path d="M2 5 C2 5 6 3 16 3 26 3 30 5 30 5 L19 18 19 27 13 30 13 18 2 5Z" />
+        </symbol>
 
 
     </svg>
@@ -140,17 +143,7 @@
             $('[data-toggle="popover1"]').popover();
         });
     </script>
-    <script>
-    $(function () {
-        $('[data-toggle="popover"]').popover({
-            placement: 'top', // Встановлюємо розташування popover на top
-            delay: {
-                show: 1000, // Затримка перед відображенням, в мілісекундах
-                hide: 0 // Затримка перед приховуванням, в мілісекундах
-            }
-        });
-    });
-    </script>
+
     <script>
         $('#statusModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Кнопка, що викликала модальне вікно
@@ -167,9 +160,108 @@
         // Приклад, як ви могли б змінити href для кнопки збереження
         modal.find('a').attr({'href': href, 'class': newсlass}).text(status);
         });
-
-
     </script>
+<script>
+function toggleRadio(element) {
+    // Перша частина коду для зміни стану кнопки
+    if (element.checked && element.getAttribute("waschecked") == "true") {
+        element.checked = false;
+        element.setAttribute("waschecked", "false");
+    } else {
+        element.setAttribute("waschecked", "true");
+    }
+
+    // Reset "waschecked" for other radio buttons in the same group
+    let radios = document.querySelectorAll('input[type="radio"][name="' + element.name + '"]');
+    radios.forEach(radio => {
+        if (radio.id !== element.id) {
+            radio.setAttribute("waschecked", "false");
+        }
+    });
+
+    // Друга частина коду для збереження вибраного значення
+    const filterName = element.name;
+    const filterValue = element.checked ? element.value : ''; // Перевіряємо, чи кнопка вибрана
+    sessionStorage.setItem(filterName, filterValue);
+}
+
+// При завантаженні сторінки
+document.addEventListener('DOMContentLoaded', function() {
+    // Отримуємо збережені значення з sessionStorage
+    const savedFilters = {};
+    for (let i = 0; i < sessionStorage.length; i++) {
+        const filterName = sessionStorage.key(i);
+        const filterValue = sessionStorage.getItem(filterName);
+        savedFilters[filterName] = filterValue;
+    }
+
+    // Встановлюємо вибрані значення для відповідних елементів
+    for (const [filterName, filterValue] of Object.entries(savedFilters)) {
+        const filterElement = document.querySelector(`[name="${filterName}"][value="${filterValue}"]`);
+        if (filterElement) {
+            filterElement.checked = true;
+            filterElement.setAttribute("waschecked", "true");
+        }
+    }
+});
+</script>
+
+<script>
+// JavaScript-код для функції скидання фільтрів
+function resetFilters() {
+    // Скидання вибраних значень у фільтрах з випадаючими списками
+    document.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0; // Встановлюємо перший елемент списку (пустий або "Усі типи/пріоритети")
+    });
+
+    // Скидання вибраних значень у фільтрах з радіокнопками
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.checked = false; // Скидаємо вибрані радіокнопки
+        radio.removeAttribute("waschecked"); // Скидаємо позначку "waschecked"
+    });
+
+    // Видалення збережених значень фільтрів з sessionStorage
+    sessionStorage.clear();
+}
+</script>
+<script>
+function updateFilterCount() {
+    let count = 0;
+
+    // Перевірка вибраних радіо кнопок
+    document.querySelectorAll('input[type="radio"]:checked').forEach((radio) => {
+        if (radio.value !== '') {
+            count++;
+        }
+    });
+
+    // Перевірка вибраних випадаючих списків, якщо є
+    document.querySelectorAll('select').forEach((select) => {
+        if (select.value !== "") {
+            count++;
+        }
+    });
+
+    const badge = document.getElementById('filter-badge');
+    if (count > 0) {
+        badge.textContent = count;
+        badge.style.display = 'inline-block';
+    } else {
+        badge.style.display = 'none';
+    }
+
+    // Оновлення тексту в бейджі
+    document.getElementById('filter-count').textContent = count;
+}
+
+// Виклик updateFilterCount при зміні стану будь-якого фільтра
+document.querySelectorAll('input[type="radio"], select').forEach((input) => {
+    input.addEventListener('change', updateFilterCount);
+});
+
+// Якщо потрібно, можна додати ініціалізацію під час завантаження сторінки
+window.addEventListener('load', updateFilterCount);
+</script>
 
 
 </body>

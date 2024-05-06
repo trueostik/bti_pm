@@ -1,4 +1,7 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 from . import views
 
@@ -35,4 +38,4 @@ urlpatterns = [
     path('delete_contact/<int:contact_id>', views.delete_contact, name='delete_contact'),
     path('delete_contact_modal/<int:contact_id>', views.delete_contact_modal, name='delete_contact_modal'),
 
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
