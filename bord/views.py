@@ -61,6 +61,44 @@ def archive(request):
 
 
 @login_required()
+def my_subjects(request):
+    filter_form = SubjectFilterForm(request.GET)
+    subjects = Subject.objects.filter(user=request.user)
+
+    if filter_form.is_valid():
+        data = filter_form.cleaned_data
+        if data.get('type'):
+            subjects = subjects.filter(type=data['type'])
+        if data.get('priority'):
+            subjects = subjects.filter(priority=data['priority'])
+
+        task_fields = ['measured', 'drawn', 'calculated', 'typed', 'numbered', 'done']
+        for field in task_fields:
+            if field in data and data[field] != '':
+                subjects = subjects.filter(**{field: data[field]})
+
+    subjects = subjects.order_by('priority', '-date_added')
+    subjects_count = subjects.filter(archived=False).count()
+    context = {'subjects': subjects, 'subjects_count': subjects_count, 'filter_form': filter_form}
+
+    for subject in subjects:
+        subject.unfinished_subtasks_count = subject.subtask_set.filter(done=False).count()
+
+    return render(request, 'bord/my_subjects.html', context)
+
+
+@login_required()
+def take_subject(request, subject_id):
+    subject = Subject.objects.get(id=subject_id)
+    user = request.user
+    if user in subject.user.all():
+        subject.user.remove(user)
+    else:
+        subject.user.add(user)
+    return redirect('bord:subject', subject_id=subject.id)
+
+
+@login_required()
 def todo(request):
     user = request.user
     tasks = Task.objects.filter(user=user).order_by('done', '-date_added')
@@ -71,10 +109,11 @@ def todo(request):
 @login_required()
 def subject_view(request, subject_id):
     subject = Subject.objects.get(id=subject_id)
+    users = subject.user.all()
     comments = subject.comment_set.order_by('-date_added')
     subtasks = subject.subtask_set.order_by('done', 'id')
     contacts = subject.contact_set.all().order_by('id')
-    context = {'subject': subject, 'comments': comments, 'subtasks': subtasks, 'contacts': contacts}
+    context = {'subject': subject, 'comments': comments, 'subtasks': subtasks, 'contacts': contacts, 'users': users}
     return render(request, 'bord/subject.html', context)
 
 
@@ -85,7 +124,9 @@ def new_subject(request):
     else:
         form = SubjectForm(data=request.POST)
         if form.is_valid():
-            form.save()
+            new_subject = form.save(commit=False)
+            new_subject.save()
+            new_subject.user.add(request.user)
             return redirect('bord:index')
 
     context = {'form': form}
@@ -184,13 +225,19 @@ def change_priority(request, subject_id, priority):
 @login_required()
 def add_to_archive(request, subject_id):
     subject = Subject.objects.get(id=subject_id)
+    user = request.user
+
     if subject.archived:
         subject.archived = False
         subject.done = False
+        subject.user.clear()
+        subject.user.add(user)
         subject.save()
     else:
         subject.archived = True
+        subject.user.clear()
         subject.save()
+
     return redirect('bord:index')
 
 

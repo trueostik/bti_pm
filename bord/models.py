@@ -22,6 +22,7 @@ class Subject(models.Model):
         LOW = 'CC', _('Низький')
 
     name = models.CharField(max_length=200)
+    user = models.ManyToManyField(User, blank=True)
     type = models.CharField(max_length=2, choices=TypeOfSubject.choices, default=TypeOfSubject.HOUSE)
     priority = models.CharField(max_length=3, choices=Priority.choices, default=Priority.HIGH)
     archived = models.BooleanField(default=False)

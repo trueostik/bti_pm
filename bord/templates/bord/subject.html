@@ -18,8 +18,14 @@
             {% endfor %}
         {% endif %}
     </div>
-    <a class="btn btn-primary mt-3" href="{% url 'bord:edit_subject' subject.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-edit"></use></svg> Редагувати</a>
-
+    <div class="d-flex w-100 justify-content-between">
+        <a class="btn btn-primary mt-3" href="{% url 'bord:edit_subject' subject.id %}"><svg class="bi" width="16" height="16"><use xlink:href="#i-edit"></use></svg> Редагувати</a>
+        {% if request.user in users %}
+            <a class="btn btn-success mt-3" href="{% url 'bord:take_subject' subject.id %}">Мій об'єкт</a>
+        {% else %}
+            <a class="btn btn-outline-success mt-3" href="{% url 'bord:take_subject' subject.id %}">Вз'яти об'єкт</a>
+        {% endif %}
+    </div>
     <h4 class="mt-5">Задачі:</h4>
         {% include "bord/partials/subtask_list.html" %}
     <a class="btn btn-primary mt-3" href="{% url 'bord:new_subtask' subject.id %}">+ Додати задачу</a>
