@@ -5,7 +5,7 @@
 {% block content %}
     <div class="d-flex w-100 justify-content-between">
         <a class="btn btn-primary mb-3" href="{% url 'bord:new_subject' %}">+ Новий об'єкт</a>
-        <h4>Кількість об'єктів: {{ subjects_count }}</h4>
+        <h4>Кількість моїх об'єктів: {{ subjects_count }}</h4>
         <button type="button" class="btn btn-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
             <svg class="bi" width="32" height="32"><use xlink:href="#i-filter"></use></svg>
             <span class="badge bg-danger" id="filter-badge" style="display: none;"></span>
@@ -165,7 +165,7 @@
             </div>
           {% endif %}
         {% empty %}
-            <p>Нема роботи</p>
+            <p>Немє об'єктів</p>
         {% endfor %}
     </div>
 
