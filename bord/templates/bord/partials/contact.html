@@ -1,0 +1,33 @@
+<div id="contacts-list">
+    {% for contact in contacts %}
+    <div class="form-control mb-2" id="contact-{{ contact.id }}" hx-target="this" hx-swap="outerHTML">
+        <p class="mb-1">Ім'я: {{ contact.contact_name }}</p>
+        <p class="mb-1">Номер: {{ contact.contact_number }}</p>
+        <button hx-get="/edit_contact/{{ contact.id }}" class="btn btn-outline-primary">
+        Редагувати контакт
+        </button>
+        <button
+            class="btn btn-outline-danger"
+            hx-get="/delete_contact_modal/{{ contact.id }}"
+            hx-target="#modals-here .modal-content"
+            hx-trigger="click"
+            data-bs-toggle="modal"
+            data-bs-target="#modals-here">
+            Вивалити контакт
+        </button>
+    </div>
+    {% endfor %}
+    <div id="newContactFormContainer" hx-swap="outerHTML">
+    </div>
+</div>
+
+<div id="modals-here"
+    class="modal modal-blur fade"
+    style="display: none"
+    aria-hidden="true"
+    tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div>
+

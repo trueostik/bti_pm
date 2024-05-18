@@ -9,19 +9,32 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
+            <a class="nav-link active position-relative" aria-current="page" href="{% url 'bord:my_subjects' %}">
+                Мої об'єкти
+                {% if request.user|my_subjects_count != 0 %}
+                    <span class="badge bg-danger">
+                        {{ request.user|my_subjects_count }}
+                        <span class="visually-hidden">unfinished tasks</span>
+                    </span>
+                {% endif %}
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link active position-relative" aria-current="page" href="{% url 'bord:todo' %}">
-                To Do
-                <span class="badge bg-danger">
-                {{ request.user|unfinished_tasks_count }}
-                <span class="visually-hidden">unfinished tasks</span>
-                </span>
+                Мої завдання
+                {% if request.user|unfinished_tasks_count != 0 %}
+                    <span class="badge bg-danger">
+                        {{ request.user|unfinished_tasks_count }}
+                        <span class="visually-hidden">unfinished tasks</span>
+                    </span>
+                {% endif %}
             </a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'bord:archive' %}">Архів</a>
         </li>
       </ul>
-      <form class="d-flex" role="search" id="search-form" method="get" action="{% url 'bord:search' %}">
+      <form class="d-flex mt-3" role="search" id="search-form" method="get" action="{% url 'bord:search' %}">
         <input class="form-control me-2" type="text" placeholder="Пошук" aria-label="Search" name="query">
         <button class="btn btn-sm btn-outline-success me-2" type="submit">
           <span class="d-inline-flex align-items-center">

@@ -1,0 +1,14 @@
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title fs-5">Видалення контакту</h5>
+    </div>
+    <div class="modal-body">
+      <p>Контакт буде видалено!</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+      <button type="button" class="btn btn-danger" hx-delete="{% url 'bord:delete_contact' contact.id %}" hx-target="#contacts-list" hx-swap="outerHTML" data-bs-dismiss="modal">Видалити</button>
+    </div>
+  </div>
+</div>

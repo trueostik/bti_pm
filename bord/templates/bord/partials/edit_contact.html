@@ -1,0 +1,11 @@
+{% load django_bootstrap5 %}
+
+<form class="form-control mb-2" method="post" hx-post="/edit_contact/{{ contact.id }}/" hx-target="#contacts-list" hx-swap="outerHTML">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% block buttons %}
+        <button class="btn btn-outline-success">Зберегти контакт</button>
+        <button class="btn btn-outline-danger" hx-get="/contacts/{{ subject.id }}">Скасувати</button>
+    {% endblock buttons %}
+</form>
+

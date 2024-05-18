@@ -1,4 +1,7 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 from . import views
 
@@ -7,6 +10,8 @@ app_name = 'bord'
 urlpatterns = [
     path('', views.index, name='index'),
     path('search', views.search_view, name='search'),
+    path('my_subjects', views.my_subjects, name='my_subjects'),
+    path('take_subject/<int:subject_id>', views.take_subject, name='take_subject'),
     path('archive', views.archive, name='archive'),
     path('todo', views.todo, name='todo'),
     path('add_to_archive/<int:subject_id>', views.add_to_archive, name='add_to_archive'),
@@ -23,10 +28,16 @@ urlpatterns = [
     path('check_subtask/<int:subtask_id>/', views.check_subtask, name='check_subtask'),
     path('edit_subtask/<int:subtask_id>', views.edit_subtask, name='edit_subtask'),
     path('delete_subtask/<int:subtask_id>', views.delete_subtask, name='delete_subtask'),
+    path('delete_subtask_modal/<int:subtask_id>', views.delete_subtask_modal, name='delete_subtask_modal'),
     path('new_task/', views.new_task, name='new_task'),
     path('check_task/<int:task_id>/', views.check_task, name='check_task'),
     path('edit_task/<int:task_id>', views.edit_task, name='edit_task'),
     path('delete_task/<int:task_id>', views.delete_task, name='delete_task'),
+    path('contacts/<int:subject_id>/', views.contacts, name='contacts'),
+    path('contact/<int:contact_id>/', views.contact, name='contact'),
+    path('new_contact/<int:subject_id>/', views.new_contact, name='new_contact'),
+    path('edit_contact/<int:contact_id>/', views.edit_contact, name='edit_contact'),
+    path('delete_contact/<int:contact_id>', views.delete_contact, name='delete_contact'),
+    path('delete_contact_modal/<int:contact_id>', views.delete_contact_modal, name='delete_contact_modal'),
 
-
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

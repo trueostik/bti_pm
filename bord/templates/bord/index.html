@@ -1,12 +1,31 @@
 {% extends "bord/base.html" %}
-
+{% load crispy_forms_tags %}
 
 
 {% block content %}
     <div class="d-flex w-100 justify-content-between">
         <a class="btn btn-primary mb-3" href="{% url 'bord:new_subject' %}">+ Новий об'єкт</a>
         <h4>Кількість об'єктів: {{ subjects_count }}</h4>
+        <button type="button" class="btn btn-light" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+            <svg class="bi" width="32" height="32"><use xlink:href="#i-filter"></use></svg>
+            <span class="badge bg-danger" id="filter-badge" style="display: none;"></span>
+        </button>
     </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasRightLabel">Фільтри</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="container">
+          <form method="get">
+            {% crispy filter_form %}
+          </form>
+        </div>
+      </div>
+    </div>
+
 
     <div class="row" data-masonry="{&quot;percentPosition&quot;: true }" style="position: relative; height: 1066.4px;">
         {% for subject in subjects %}
@@ -146,7 +165,7 @@
             </div>
           {% endif %}
         {% empty %}
-            <p>Нема роботи</p>
+            <p>Немє об'єктів</p>
         {% endfor %}
     </div>
 

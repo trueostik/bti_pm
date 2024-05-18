@@ -8,6 +8,16 @@
     <form class="form-control" action="{% url 'bord:edit_subject' subject.id %}" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
+        Контакти:
+
+            {% include "bord/partials/contact.html" %}
+    <div>
+        <button hx-get="{% url 'bord:new_contact' subject.id %}"
+                hx-target="#newContactFormContainer"
+                class="btn btn-outline-primary mt-2 mb-4 ms-3">
+            Додати контакт
+        </button>
+    </div>
         {% block buttons %}
             <button class="btn btn-primary" name="submit">Зберегти</button>
         {% endblock buttons %}

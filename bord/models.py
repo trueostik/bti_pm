@@ -22,6 +22,7 @@ class Subject(models.Model):
         LOW = 'CC', _('Низький')
 
     name = models.CharField(max_length=200)
+    user = models.ManyToManyField(User, blank=True)
     type = models.CharField(max_length=2, choices=TypeOfSubject.choices, default=TypeOfSubject.HOUSE)
     priority = models.CharField(max_length=3, choices=Priority.choices, default=Priority.HIGH)
     archived = models.BooleanField(default=False)
@@ -124,3 +125,12 @@ class Task (models.Model):
     def users(self):
         users = '<br>'.join([user.username for user in self.user.all()])
         return users
+
+
+class Contact (models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    contact_name = models.CharField(max_length=50)
+    contact_number = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.subject}, {self.contact_name}"
