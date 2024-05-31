@@ -3,7 +3,7 @@
 {% block content %}
 
 
- <h4 class="mt-5">Мої завдання:</h4>
+ <h2 class="mt-5">Мої завдання:</h2>
     {% for task in tasks %}
         <ul class="list-group">
           <li class="list-group-item mt-2" aria-current="true">
@@ -51,5 +51,10 @@
         <p>Нема завдань</p>
     {% endfor %}
     <a class="btn btn-primary mt-3" href="{% url 'bord:new_task' %}">+ Додати завдання</a>
+
+    {% if subjects %}
+        <h2 class="mt-5 mb-3">Інші завдання:</h2>
+        {% include "bord/partials/todo_subtask_list.html" %}
+    {% endif %}
 
 {% endblock content %}

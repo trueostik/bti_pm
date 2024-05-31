@@ -1,0 +1,19 @@
+<li class="list-group-item mt-2" aria-current="true" id="subtask{{ subtask.id }}">
+    <div class="d-flex w-100 justify-content-between">
+        {% if subtask.done %}
+            <div>
+                <button class="btn btn-success btn-sm" hx-get="{% url 'bord:todo_check_subtask' subtask.id %}" hx-target="#subtask{{ subtask.id }}" hx-swap="outerHTML" hx-trigger="click">
+                    <svg class="bi" width="16" height="16"><use xlink:href="#done"></use></svg>
+                </button>
+                <del class="text-muted">{{ subtask.text }}</del>
+            </div>
+        {% else %}
+            <div>
+                <button class="btn btn-danger btn-sm" hx-get="{% url 'bord:todo_check_subtask' subtask.id %}" hx-target="#subtask{{ subtask.id }}" hx-swap="outerHTML" hx-trigger="click">
+                    <svg class="bi" width="16" height="16"><use xlink:href="#empty"></use></svg>
+                </button>
+                {{ subtask.text }}
+            </div>
+        {% endif %}
+    </div>
+</li>

@@ -102,7 +102,14 @@ def take_subject(request, subject_id):
 def todo(request):
     user = request.user
     tasks = Task.objects.filter(user=user).order_by('done', '-date_added')
-    context = {'tasks': tasks}
+    subjects = Subject.objects.filter(subtask__isnull=False).distinct()
+    subjects_with_incomplete_subtasks = []
+    for subject in subjects:
+        if subject.subtask_set.filter(done=False).exists():
+            subject.subtasks_sorted = subject.subtask_set.all().order_by('done', 'id')
+            subjects_with_incomplete_subtasks.append(subject)
+
+    context = {'tasks': tasks, 'subjects': subjects_with_incomplete_subtasks}
     return render(request, 'bord/todo.html', context)
 
 
@@ -267,6 +274,14 @@ def check_subtask(request, subtask_id):
     subtasks = Subtask.objects.filter(subject=subject).order_by('done', 'id')
 
     return render(request, 'bord/partials/subtask_list.html', {'subtasks': subtasks})
+
+
+@login_required()
+def todo_check_subtask(request, subtask_id):
+    subtask = get_object_or_404(Subtask, id=subtask_id)
+    subtask.done = not subtask.done
+    subtask.save()
+    return render(request, 'bord/partials/subtask_partial.html', {'subtask': subtask})
 
 
 @login_required()
