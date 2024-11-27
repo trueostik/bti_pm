@@ -3,12 +3,27 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
+from django.utils.translation import gettext_lazy as _
 
 from .models import Subject, Comment, Subtask, User, Task, Contact
 from .forms import SubjectForm, CommentForm, SubtaskForm, TaskForm, ContactForm, SubjectFilterForm
 
 
-@login_required()
+def get_status_class(subject, status):
+    if getattr(subject, status):
+        return "btn btn-success"
+    else:
+        return "btn btn-secondary"
+
+
+def get_new_class(subject, status):
+    if getattr(subject, status):
+        return "btn btn-secondary"
+    else:
+        return "btn btn-success"
+
+
 def index(request):
     filter_form = SubjectFilterForm(request.GET)
     subjects = Subject.objects.all()
@@ -26,11 +41,23 @@ def index(request):
                 subjects = subjects.filter(**{field: data[field]})
 
     subjects = subjects.order_by('priority', '-date_added')
-    subjects_count = subjects.filter(archived=False).count()
-    context = {'subjects': subjects, 'subjects_count': subjects_count, 'filter_form': filter_form}
 
-    for subject in subjects:
+    # Пагінація
+    paginator = Paginator(subjects, 15)  # 10 об'єктів на сторінку
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    for subject in page_obj:
         subject.unfinished_subtasks_count = subject.subtask_set.filter(done=False).count()
+        subject.status_classes = {status: get_status_class(subject, status) for status in task_fields}
+        subject.new_classes = {status: get_new_class(subject, status) for status in task_fields}
+
+        # Обробка HTMX-запиту
+    if request.headers.get('HX-Request'):
+        return render(request, 'bord/partials/subject_list.html', {'subjects': page_obj})
+
+    subjects_count = paginator.count
+    context = {'subjects': page_obj, 'subjects_count': subjects_count, 'filter_form': filter_form}
 
     return render(request, 'bord/index.html', context)
 

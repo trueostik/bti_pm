@@ -245,24 +245,6 @@ class SubjectFilterForm(forms.Form):
 
                 Div(
                     Div(
-                        HTML('<p>Набрано: </p>'),
-                        css_class='col-sm-4'
-                    ),
-                    Div(
-                        Div(
-                            HTML(
-                                '<input type="radio" class="btn-check"  name="typed" value="True" id="typed-true" autocomplete="off" onclick="toggleRadio(this);"><label class="btn btn-outline-success" for="typed-true">Так</label>'),
-                            HTML(
-                                '<input type="radio" class="btn-check" name="typed" value="False" id="typed-false" autocomplete="off" onclick="toggleRadio(this);"><label class="btn btn-outline-danger" for="typed-false">Ні</label>'),
-                            css_class='btn-group'
-                        ),
-                        css_class='col-sm-6'
-                    ),
-                    css_class='row mb-3'
-                ),
-
-                Div(
-                    Div(
                         HTML('<p>Розставлено: </p>'),
                         css_class='col-sm-4'
                     ),
@@ -272,6 +254,24 @@ class SubjectFilterForm(forms.Form):
                                 '<input type="radio" class="btn-check"  name="numbered" value="True" id="numbered-true" autocomplete="off" onclick="toggleRadio(this);"><label class="btn btn-outline-success" for="numbered-true">Так</label>'),
                             HTML(
                                 '<input type="radio" class="btn-check" name="numbered" value="False" id="numbered-false" autocomplete="off" onclick="toggleRadio(this);"><label class="btn btn-outline-danger" for="numbered-false">Ні</label>'),
+                            css_class='btn-group'
+                        ),
+                        css_class='col-sm-6'
+                    ),
+                    css_class='row mb-3'
+                ),
+
+                Div(
+                    Div(
+                        HTML('<p>Набрано: </p>'),
+                        css_class='col-sm-4'
+                    ),
+                    Div(
+                        Div(
+                            HTML(
+                                '<input type="radio" class="btn-check"  name="typed" value="True" id="typed-true" autocomplete="off" onclick="toggleRadio(this);"><label class="btn btn-outline-success" for="typed-true">Так</label>'),
+                            HTML(
+                                '<input type="radio" class="btn-check" name="typed" value="False" id="typed-false" autocomplete="off" onclick="toggleRadio(this);"><label class="btn btn-outline-danger" for="typed-false">Ні</label>'),
                             css_class='btn-group'
                         ),
                         css_class='col-sm-6'

@@ -115,6 +115,9 @@
   text-decoration: none; /* Відміняє підкреслення тексту посилання */
 }
 
+
+
+
   </style>
 </head>
 
@@ -262,6 +265,33 @@ document.querySelectorAll('input[type="radio"], select').forEach((input) => {
 // Якщо потрібно, можна додати ініціалізацію під час завантаження сторінки
 window.addEventListener('load', updateFilterCount);
 </script>
+
+<script>
+    document.addEventListener("htmx:afterSwap", function(event) {
+        if (event.target.id === "masonry-container") {
+            // Оновлення Masonry
+            var masonry = new Masonry('#masonry-container', {
+                itemSelector: '.masonry-item',
+                columnWidth: '.masonry-item',
+                percentPosition: true
+            });
+            masonry.layout();
+        }
+    });
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var masonry = new Masonry('#masonry-container', {
+            itemSelector: '.masonry-item',
+            columnWidth: '.masonry-item',
+            percentPosition: true
+        });
+    });
+</script>
+
+
 
 
 </body>
