@@ -141,13 +141,14 @@
     </div>
 
     <!-- HTMX для пагінації -->
+  {% if subjects.has_next %}
    <div id="pagination-trigger"
      hx-get="?page={{ subjects.next_page_number }}"
      hx-trigger="revealed"
      hx-swap="beforeend"
      hx-target="#masonry-container">
    </div>
-
+  {% endif %}
 
 
 

@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 from django.utils.translation import gettext_lazy as _
 
 from .models import Subject, Comment, Subtask, User, Task, Contact
@@ -45,7 +45,10 @@ def index(request):
     # Пагінація
     paginator = Paginator(subjects, 15)  # 10 об'єктів на сторінку
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    try:
+        page_obj = paginator.get_page(page_number)
+    except EmptyPage:
+        return HttpResponse('')
 
     for subject in page_obj:
         subject.unfinished_subtasks_count = subject.subtask_set.filter(done=False).count()
