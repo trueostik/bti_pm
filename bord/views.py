@@ -1,9 +1,13 @@
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage
+from django.forms import modelform_factory
+from django.urls import reverse
+from django.http import HttpResponse, JsonResponse
 from django.utils.translation import gettext_lazy as _
 
 from .models import Subject, Comment, Subtask, User, Task, Contact
@@ -43,7 +47,7 @@ def index(request):
     subjects = subjects.order_by('priority', '-date_added')
 
     # Пагінація
-    paginator = Paginator(subjects, 15)  # 10 об'єктів на сторінку
+    paginator = Paginator(subjects, 15)  # 15 об'єктів на сторінку
     page_number = request.GET.get('page')
     try:
         page_obj = paginator.get_page(page_number)
@@ -156,18 +160,35 @@ def subject_view(request, subject_id):
 
 @login_required()
 def new_subject(request):
-    if request.method != 'POST':
-        form = SubjectForm()
-    else:
-        form = SubjectForm(data=request.POST)
+    if request.method == 'POST':
+        form = SubjectForm(request.POST)
+        contacts_data = json.loads(request.POST.get('contacts', '[]'))  # Отримуємо контакти у вигляді JSON
+
         if form.is_valid():
             new_subject = form.save(commit=False)
             new_subject.save()
             new_subject.user.add(request.user)
-            return redirect('bord:index')
 
-    context = {'form': form}
-    return render(request, 'bord/new_subject.html', context)
+            # Створюємо контакти та зв’язуємо їх із новим суб'єктом
+            for contact in contacts_data:
+                Contact.objects.create(
+                    subject=new_subject,
+                    contact_name=contact['contact_name'],
+                    contact_number=contact['contact_number']
+                )
+
+            return HttpResponse(status=200, headers={'HX-Redirect': reverse('bord:index')})
+
+        return JsonResponse({'success': False, 'errors': form.errors})
+
+    return render(request, 'bord/new_subject.html', {'form': SubjectForm()})
+
+
+#ContactForm = modelform_factory(Contact, fields=('contact_name', 'contact_number'))
+
+def contact_form_partial(request):
+    form = ContactForm()
+    return render(request, 'bord/partials/contact_form_partial.html', {'form': form})
 
 
 @login_required()

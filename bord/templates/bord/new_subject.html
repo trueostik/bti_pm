@@ -2,13 +2,59 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-    <h4>Новий об'єкт:</h4>
+<form class="form-control" id="subject-form" hx-post="{% url 'bord:new_subject' %}" hx-target="this" hx-swap="outerHTML">
+    {% csrf_token %}
+    {% bootstrap_form form %}
 
-    <form class="form-control" action="{% url 'bord:new_subject' %}" method="post">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        {% block buttons %}
-            <button class="btn btn-primary" name="submit">Додати об'єкт</button>
-        {% endblock buttons %}
-    </form>
+    <!-- Контейнер для контактів -->
+    <div id="contacts-container">
+    </div>
+
+    <!-- Приховане поле для контактів -->
+    <input type="hidden" name="contacts" id="contacts-data">
+
+    <!-- Кнопка додати контакт -->
+    <button type="button" class="btn btn-primary mt-2" hx-get="{% url 'bord:contact_form_partial' %}" hx-target="#contacts-container" hx-swap="beforeend">Додати контакт</button>
+    <br>
+    <button class="btn btn-success mt-3" type="submit">Зберегти об'єкт</button>
+</form>
+
+<script>
+document.getElementById('subject-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Зупиняємо стандартну відправку форми
+
+    let contacts = [];
+    document.querySelectorAll('.contact-form').forEach(form => {
+        let contact_name = form.querySelector('[name="contact_name"]').value;
+        let contact_number = form.querySelector('[name="contact_number"]').value;
+        if (contact_name && contact_number) {
+            contacts.push({contact_name, contact_number});
+        }
+    });
+
+    document.getElementById('contacts-data').value = JSON.stringify(contacts);
+    this.submit();  // Відправляємо форму з контактами
+});
+</script>
+<script>
+async function submitForm(event) {
+    event.preventDefault();  // Зупиняємо стандартну відправку форми
+
+    let form = event.target;
+    let response = await fetch(form.action, {
+        method: form.method,
+        body: new FormData(form),
+    });
+
+    let result = await response.json();
+
+    if (result.success) {
+        window.location.href = result.redirect_url;  // Перенаправлення після успішного збереження
+    } else {
+        console.log(result.errors);
+    }
+}
+
+</script>
+
 {% endblock content %}

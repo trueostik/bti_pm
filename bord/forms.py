@@ -3,17 +3,16 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Row, Column, Div, ButtonHolder, HTML
 from .models import Subject, Comment, Subtask, Task, Contact
 from crispy_forms.bootstrap import InlineRadios, FormActions
+from django.forms import modelformset_factory
 
 
 
 class SubjectForm(forms.ModelForm):
     class Meta:
         model = Subject
-        fields = ['name', 'client_name', 'client_number', 'type', 'address', 'invent_number']
+        fields = ['name', 'type', 'address', 'invent_number']
         labels = {
             'name': 'Назва',
-            'client_name': "Ім'я замовника",
-            'client_number': 'Номер телефону',
             'type': 'Тип',
             'address': 'Адреса',
             'invent_number': 'Інвентаризаційний номер'
@@ -51,100 +50,9 @@ class ContactForm(forms.ModelForm):
         labels = {'contact_name': "Ім'я", 'contact_number': 'Номер телефону'}
 
 
-'''class SubjectFilterForm(forms.Form):
-    TYPE_CHOICES = [
-        ('', 'Усі типи'),
-        ('BU', 'Багатоповерхівка'),
-        ('CO', 'Будівля'),
-        ('GA', 'Гараж'),
-        ('HO', 'Особняк'),
-        ('AP', 'Квартира'),
-        ('KE', 'КЕВ'),
-        ('QU', 'Нежитлове приміщення'),
-        ('UF', 'Незавершене'),
-        ('SH', 'Садовий будинок'),
-    ]
 
-    PRIORITY_CHOICES = [
-        ('', 'Усі пріоритети'),
-        ('AA', 'Високий'),
-        ('BB', 'Звичайний'),
-        ('CC', 'Низький'),
-    ]
 
-    BOOLEAN_CHOICES = [
-        ('', 'Будь-яке'),
-        ('True', 'Так'),
-        ('False', 'Ні'),
-    ]
 
-    type = forms.ChoiceField(label='Тип', choices=TYPE_CHOICES, required=False)
-    priority = forms.ChoiceField(label='Пріоритет', choices=PRIORITY_CHOICES, required=False)
-
-    measured = forms.ChoiceField(
-        label='Поміряно',
-        choices=[('', 'Будь-яке'), ('True', 'Так'), ('False', 'Ні')],
-        required=False,
-        widget=forms.RadioSelect(attrs={'class': 'btn-check'})
-    )
-    drawn = forms.ChoiceField(
-        label='Намальовано',
-        choices=[('', 'Будь-яке'), ('True', 'Так'), ('False', 'Ні')],
-        required=False,
-        widget=forms.RadioSelect(attrs={'class': 'btn-check'})
-    )
-    calculated = forms.ChoiceField(
-        label='Пораховано',
-        choices=[('', 'Будь-яке'), ('True', 'Так'), ('False', 'Ні')],
-        required=False,
-        widget=forms.RadioSelect(attrs={'class': 'btn-check'})
-    )
-    typed = forms.ChoiceField(
-        label='Набрано',
-        choices=[('', 'Будь-яке'), ('True', 'Так'), ('False', 'Ні')],
-        required=False,
-        widget=forms.RadioSelect(attrs={'class': 'btn-check'})
-    )
-    numbered = forms.ChoiceField(
-        label='Пронумеровано',
-        choices=[('', 'Будь-яке'), ('True', 'Так'), ('False', 'Ні')],
-        required=False,
-        widget=forms.RadioSelect(attrs={'class': 'btn-check'})
-    )
-    done = forms.ChoiceField(
-        label='Виконано',
-        choices=[('', 'Будь-яке'), ('True', 'Так'), ('False', 'Ні')],
-        required=False,
-        widget=forms.RadioSelect(attrs={'class': 'btn-check'})
-    )
-
-    def __init__(self, *args, **kwargs):
-        super(SubjectFilterForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = 'get'
-        self.helper.layout = Layout(
-            Row(
-                Column('type', css_class='col-md-6'),
-                Column('priority', css_class='col-md-6'),
-            ),
-            Div(
-                Row(
-                    Column('measured', css_class='col-md-4'),
-                    Column('drawn', css_class='col-md-4'),
-                    Column('calculated', css_class='col-md-4'),
-                ),
-                Row(
-                    Column('typed', css_class='col-md-4'),
-                    Column('numbered', css_class='col-md-4'),
-                    Column('done', css_class='col-md-4'),
-                ),
-                css_class='btn-group-toggle',
-            ),
-            FormActions(
-                Submit('submit', 'Фільтрувати', css_class='btn btn-primary'),
-                css_class='mt-4',
-            )
-        )'''
 class SubjectFilterForm(forms.Form):
     TYPE_CHOICES = [
         ('', 'Усі типи'),
@@ -160,7 +68,7 @@ class SubjectFilterForm(forms.Form):
     ]
 
     PRIORITY_CHOICES = [
-        ('', 'Усі пріоритети'),
+        ('', 'Будь-який пріоритет'),
         ('AA', 'Високий'),
         ('BB', 'Звичайний'),
         ('CC', 'Низький'),

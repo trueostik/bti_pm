@@ -16,6 +16,7 @@ urlpatterns = [
     path('todo', views.todo, name='todo'),
     path('add_to_archive/<int:subject_id>', views.add_to_archive, name='add_to_archive'),
     path('subject/<int:subject_id>/', views.subject_view, name='subject'),
+    path('contact-form-partial/', views.contact_form_partial, name='contact_form_partial'),
     path('new_subject/', views.new_subject, name='new_subject'),
     path('new_comment/<int:subject_id>/', views.new_comment, name='new_comment'),
     path('edit_comment/<int:comment_id>', views.edit_comment, name='edit_comment'),
