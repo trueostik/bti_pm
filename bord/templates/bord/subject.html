@@ -4,8 +4,6 @@
     <h1>{{ subject }}<span class="badge bg-secondary">{{ subject.get_type_display }}</span></h1>
     <div class="form-control">
         <p> Адреса: {{ subject.address }}</p>
-        <p> Ім'я замовника: {{ subject.client_name }}</p>
-        <p> Номер телефону: {{ subject.client_number }}</p>
         <p> Інвентаризаційний номер: {{ subject.invent_number }}</p>
         <p> Дата створення: {{ subject.date_added|date:'d.m.Y' }}</p>
         {% if contacts %}

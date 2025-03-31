@@ -1,0 +1,25 @@
+{% extends "bord/base.html" %}
+
+{% block content %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Ім'я</th>
+      <th scope="col">Номер</th>
+      <th scope="col">Об'єкт</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for contact in contacts %}
+    <tr>
+      <td>{{ contact.contact_name }}</td>
+      <td>{{ contact.contact_number }}</td>
+      <td>{{ contact.subject }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock content %}
+
+
+

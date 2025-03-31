@@ -33,6 +33,9 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'bord:archive' %}">Архів</a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'bord:contacts_list' %}">Контакти</a>
+        </li>
       </ul>
       <form class="d-flex mt-3" role="search" id="search-form" method="get" action="{% url 'bord:search' %}">
         <input class="form-control me-2" type="text" placeholder="Пошук" aria-label="Search" name="query">

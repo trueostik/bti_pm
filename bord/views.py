@@ -184,7 +184,10 @@ def new_subject(request):
     return render(request, 'bord/new_subject.html', {'form': SubjectForm()})
 
 
-#ContactForm = modelform_factory(Contact, fields=('contact_name', 'contact_number'))
+def contacts_view(request):
+    contacts = Contact.objects.all().order_by('contact_name')
+    return render(request, 'bord/contacts_list.html', {'contacts' : contacts})
+
 
 def contact_form_partial(request):
     form = ContactForm()

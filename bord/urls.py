@@ -13,6 +13,7 @@ urlpatterns = [
     path('my_subjects', views.my_subjects, name='my_subjects'),
     path('take_subject/<int:subject_id>', views.take_subject, name='take_subject'),
     path('archive', views.archive, name='archive'),
+    path('contacts_list', views.contacts_view, name='contacts_list'),
     path('todo', views.todo, name='todo'),
     path('add_to_archive/<int:subject_id>', views.add_to_archive, name='add_to_archive'),
     path('subject/<int:subject_id>/', views.subject_view, name='subject'),
