@@ -31,8 +31,8 @@
                          <a class="{{ subject.get_measured }}" href="{% url 'bord:change_status' subject.id 'measured' %}"><svg class="bi" width="24" height="24"><use xlink:href="#measured"></use></svg></a>
                          <a class="{{ subject.get_drawn }}" href="{% url 'bord:change_status' subject.id 'drawn' %}"><svg class="bi" width="24" height="24"><use xlink:href="#drawn"></use></svg></a>
                          <a class="{{ subject.get_calculated }}" href="{% url 'bord:change_status' subject.id 'calculated' %}"><svg class="bi" width="24" height="24"><use xlink:href="#calculated"></use></svg></a>
-                         <a class="{{ subject.get_typed }}" href="{% url 'bord:change_status' subject.id 'typed' %}"><svg class="bi" width="24" height="24"><use xlink:href="#typed"></use></svg></a>
                          <a class="{{ subject.get_numbered }}" href="{% url 'bord:change_status' subject.id 'numbered' %}"><svg class="bi" width="24" height="24"><use xlink:href="#numbered"></use></svg></a>
+                         <a class="{{ subject.get_typed }}" href="{% url 'bord:change_status' subject.id 'typed' %}"><svg class="bi" width="24" height="24"><use xlink:href="#typed"></use></svg></a>
                          <a class="{{ subject.get_done }}" href="{% url 'bord:change_status' subject.id 'done' %}"><svg class="bi" width="24" height="24"><use xlink:href="#done"></use></svg></a>
                          {% if subject.done %}
                             <a class="btn btn-danger" href="{% url 'bord:add_to_archive' subject.id %}"><svg class="bi" width="24" height="24"><use xlink:href="#i-archive"></use></svg></a>
