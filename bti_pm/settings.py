@@ -110,11 +110,11 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'devdb',
-            'USER': 'trueostik',
-            'PASSWORD': 'Mercury15',
-            'HOST': 'localhost',
-            'PORT': '',
+            'NAME': os.getenv('POSTGRES_DB'),
+            'USER': os.getenv('POSTGRES_USER'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+            'HOST': os.getenv('POSTGRES_HOST'),  # ВАЖЛИВО: db
+            'PORT': os.getenv('POSTGRES_PORT'),
         }
     }
 
